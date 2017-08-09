@@ -1,7 +1,10 @@
 'use strict';
 
+const path = require('path');
+
 module.exports = {
-  importUI5Module : function(path) {
+
+  importUI5Module : function(module_path) {
     let importObject;
     global.sap = {
       ui: {
@@ -11,7 +14,7 @@ module.exports = {
       }
     };
 
-    require(path);
+    require(path.resolve('.') + module_path);
     return importObject;
   }
 }
