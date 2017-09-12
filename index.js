@@ -1,20 +1,18 @@
 'use strict';
 
-const path = require('path');
+const ExtendableStub = require('./src/ExtendableStub');
+const SAPDefine = require('./src/sapDefine');
 
 module.exports = {
 
-  importUI5Module : function(module_path, dependencies) {
-    let importObject;
-    global.sap = {
-      ui: {
-        define: function(arr, fn) {
-          importObject = fn.apply(this, dependencies);
-        }
-      }
-    };
+	createExtendable: function(mockMethods) {
+		return new ExtendableStub(mockMethods);
+	},
 
-    require(path.resolve('.') + module_path);
-    return importObject;
-  }
-}
+	importUI5ModuleFactory : SAPDefine.importFactory,
+
+  importUI5Module : function(module_path, dependencies) {
+    let importObject = SAPDefine.importFactory(module_path);
+		return importObject.apply(this, dependencies);
+	}
+};
