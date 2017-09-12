@@ -11,8 +11,8 @@ module.exports = {
 
 	importUI5ModuleFactory : SAPDefine.importFactory,
 
-  importUI5Module : function(module_path, dependencies) {
-    let importObject = SAPDefine.importFactory(module_path);
+  importUI5Module : function(module_path, dependencies, globalContext) {
+    let importObject = SAPDefine.importFactory(module_path, globalContext);
 		return importObject.apply(this, dependencies);
 	}
 };
