@@ -1,6 +1,6 @@
 {
   "name": "sap-ui5-mocha",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Mocha tests infrastructure with SAPUI5 modules ",
   "main": "index.js",
   "scripts": {
