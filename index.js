@@ -11,7 +11,7 @@ module.exports = {
 		return new ExtendableStub(mockMethods);
 	},
 
-	import : function(module_path, dependencies, globalContext) {
+	import: function(module_path, dependencies, globalContext) {
 		let importedObject;
 
 		dependencies = dependencies || [];
