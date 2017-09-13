@@ -1,7 +1,7 @@
 {
-  "name": "sap-ui5-mocha",
+  "name": "ui5-module-loader",
   "version": "0.1.1",
-  "description": "Mocha tests infrastructure with SAPUI5 modules ",
+  "description": "Load UI5 Modules in pure JavaScript applications",
   "main": "index.js",
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha"
