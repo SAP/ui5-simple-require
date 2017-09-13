@@ -4,7 +4,7 @@
   "description": "Load UI5 Modules in pure JavaScript applications",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha"
+    "test": "./node_modules/mocha/bin/mocha test/*Test.js"
   },
   "keywords": [
     "npm",
