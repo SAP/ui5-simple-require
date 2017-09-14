@@ -1,6 +1,6 @@
 {
   "name": "ui5-module-loader",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Load UI5 Modules in pure JavaScript applications",
   "main": "index.js",
   "scripts": {
