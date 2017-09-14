@@ -12,7 +12,7 @@ module.exports = {
           importObject = fn;
         }
       }
-		});
+	});
 
     require(path.resolve('.') + module_path);
     return importObject;

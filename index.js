@@ -7,9 +7,18 @@ module.exports = {
 
 	loaded_factories: {},
 
-	createExtendable: function(mockMethods) {
-		return new ExtendableStub(mockMethods);
+	createExtendable: function (proto) {
+		return this.getExtendableStub(proto);
 	},
+
+	getExtendableStub: function(name, obj) {
+        if (typeof name === "object" && !obj) {
+            obj = name;
+            name = null;
+        }
+		return ExtendableStub.extend(name || "", obj || {});
+	},
+
 
 	import: function(module_path, dependencies, globalContext) {
 		let importedObject;

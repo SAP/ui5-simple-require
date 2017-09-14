@@ -1,14 +1,22 @@
 'use strict'
 
+const isFunction = function (fn) {
+    return typeof fn === "function";
+}
 class ExtendableStub {
 
-	constructor(mockMethods) {
-		this.mockMethods = mockMethods;
+	static extend(name, proto) {
+        var fnClass = proto.constructor.name !== "Object" ? proto.constructor : function () { };
+        fnClass.extend = ExtendableStub.extend;
+        fnClass.prototype = Object.create(this.prototype);
+        for (var fnName in proto) {
+            if (proto.hasOwnProperty(fnName) && isFunction(proto[fnName])) {
+                fnClass.prototype[fnName] = proto[fnName];
+            }
+        }
+        fnClass.prototype.constructor = fnClass;
+        return fnClass;
 	}
-
-	extend(name, proto) {
-		return Object.assign(proto, this.mockMethods);
-	}
-};
+}
 
 module.exports = ExtendableStub;
