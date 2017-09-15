@@ -1,10 +1,11 @@
-'use strict';
+/* eslint-env mocha */
+"use strict";
 
-const chai = require('chai');
+const chai = require("chai");
 const expect = chai.expect;
-const API = require('../index.js');
-const sinon = require('sinon');
-const sinonChai = require('sinon-chai');
+const API = require("../index.js");
+const sinon = require("sinon");
+const sinonChai = require("sinon-chai");
 chai.use(sinonChai);
 
 context("API Test", () => {
@@ -45,12 +46,12 @@ context("API Test", () => {
       let spy = sinon.spy();
       let extendable = API.createExtendable({
         fn: spy
-      })
+      });
       let instance = new extendable();
       instance.fn();
       expect(spy).to.have.been.calledOnce;
       expect(spy).to.have.been.calledOn(instance);
-    })
+    });
   });
 
   describe(".getExtendableStub function", function () {
@@ -100,6 +101,7 @@ context("API Test", () => {
           spy();
         }
       });
+      // eslint-disable-next-line no-unused-vars
       let instance = new extendable();
       expect(spy).to.have.been.calledOnce;
     });

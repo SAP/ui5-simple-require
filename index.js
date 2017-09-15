@@ -1,4 +1,3 @@
-/* global require module */
 "use strict";
 
 const ExtendableStub = require("./src/ExtendableStub");
