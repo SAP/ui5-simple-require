@@ -4,6 +4,7 @@
   "description": "Load UI5 Modules in pure JavaScript applications",
   "main": "index.js",
   "scripts": {
+    "lint": "eslint .",
     "test": "./node_modules/mocha/bin/mocha test/*Test.js",
     "testwatcher": "node node_modules/mocha/bin/mocha test/*Test.js --colors --recursive --watch"
   },
