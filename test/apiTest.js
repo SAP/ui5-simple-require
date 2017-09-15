@@ -101,6 +101,7 @@ context("API Test", () => {
           spy();
         }
       });
+      expect(spy).to.have.not.been.calledOnce;
       // eslint-disable-next-line no-unused-vars
       let instance = new extendable();
       expect(spy).to.have.been.calledOnce;
