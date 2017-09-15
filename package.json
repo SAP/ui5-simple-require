@@ -1,6 +1,6 @@
 {
   "name": "ui5-module-loader",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Load UI5 Modules in pure JavaScript applications",
   "main": "index.js",
   "scripts": {
@@ -17,6 +17,8 @@
   "license": "ISC",
   "devDependencies": {
     "chai": "^4.1.2",
-    "mocha": "^3.5.3"
+    "mocha": "^3.5.3",
+    "sinon": "^3.2.1",
+    "sinon-chai": "^2.13.0"
   }
 }
