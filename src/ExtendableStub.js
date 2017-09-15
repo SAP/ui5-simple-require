@@ -1,9 +1,6 @@
 /* global module */
 "use strict";
 
-const isFunction = function (fn) {
-  return typeof fn === "function";
-};
 
 class ExtendableStub {
 
@@ -12,7 +9,7 @@ class ExtendableStub {
     fnClass.extend = ExtendableStub.extend;
     fnClass.prototype = Object.create(this.prototype);
     for (var fnName in proto) {
-      if (proto.hasOwnProperty(fnName) && isFunction(proto[fnName])) {
+      if (proto.hasOwnProperty(fnName)) {
         fnClass.prototype[fnName] = proto[fnName];
       }
     }

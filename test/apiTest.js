@@ -106,13 +106,15 @@ context("API Test", () => {
       expect(spy).to.have.been.calledOnce;
     });
 
-    it("should only pass functions to the resulting prototype", function () {
+    it("should pass functions  and values to the resulting prototype", function () {
       let extendable = API.getExtendableStub({
         value: 1,
         fn: function () {}
       });
-      expect(extendable.prototype.value).to.be.a("undefined");
-      expect(extendable.prototype.fn).to.be.a("function");
+      let instance = new extendable();
+      expect(instance.value).to.be.equal(1);
+      expect(instance.fn).to.be.a("function");
+      expect(() => instance.fn()).to.not.throw();
     });
   });
 });
