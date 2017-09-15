@@ -1,15 +1,16 @@
-'use strict';
+/* global require context describe it sap */
+"use strict";
 
-let expect = require('chai').expect;
-let SAPDefine = require('../src/sapDefine');
+let expect = require("chai").expect;
+let SAPDefine = require("../src/sapDefine");
 
 context("Test SAP define global override", function() {
 
-	describe("Override sap global", function() {
-		it("Should add .uou to sap variable", function() {
-			SAPDefine.importFactory("/test/example/UI5ModuleExample", { uou: "pourra" } );
-			expect(sap.uou).to.be.equal("pourra");
-		});
-	});
+  describe("Override sap global", function() {
+    it("Should add .uou to sap variable", function() {
+      SAPDefine.importFactory("/test/example/UI5ModuleExample", { uou: "pourra" } );
+      expect(sap.uou).to.be.equal("pourra");
+    });
+  });
 
 });
