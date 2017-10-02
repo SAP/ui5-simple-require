@@ -33,7 +33,7 @@ sap.ui.define(['/path/to/constants'], function(Constants) {
 });
 ```
 
-#### Improt UI5 class injecting sap global variable
+#### Import UI5 class injecting sap global variable
 
 ```js
 const loader = require('ui5-module-loader');
