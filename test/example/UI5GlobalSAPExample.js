@@ -1,5 +1,6 @@
 sap.ui.define([], function() {
   return {
-    value: sap.value
+    value: sap.value,
+    resource: sap.ui.resource
   };
 });

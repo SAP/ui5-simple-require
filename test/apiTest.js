@@ -37,6 +37,7 @@ context("API Test", () => {
       let m = API.import("/test/example/UI5GlobalSAPExample", [], { value: "abc" });
       expect(m).to.be.an("object");
       expect(m.value).to.be.equal("abc");
+      expect(m.resource).to.be.a("function");
     });
 
   });
