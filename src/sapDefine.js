@@ -10,7 +10,8 @@ module.exports = {
       ui: {
         define: function(arr, fn) {
           importObject = fn;
-        }
+        },
+        resource: function() {}
       }
     });
 
