@@ -42,16 +42,34 @@ context("API Test", () => {
 
   });
 
-  describe(".createExtendable function", function () {
+  describe(".createExtendableFromObj function", function () {
     it("should return a extendable object", function () {
       let spy = sinon.spy();
-      let extendable = API.createExtendable({
+      let extendable = API.createExtendableFromObj({
         fn: spy
       });
       let instance = new extendable();
       instance.fn();
       expect(spy).to.have.been.calledOnce;
       expect(spy).to.have.been.calledOn(instance);
+    });
+  });
+
+  describe(".createExtendableFromPrototype function", function () {
+    it("should return an prototype extended", function () {
+      let spy = sinon.spy();
+      function ProtoDouble() {}
+      ProtoDouble.prototype.fn = function() {};
+      let Extendable = API.createExtendableFromPrototype(ProtoDouble);
+      let Extended = Extendable.extend("", { func: spy });
+      let extendedInstance = new Extended();
+      extendedInstance.func();
+      expect(spy).to.have.been.calledOnce;
+    });
+
+    it("should not allow an ES6 class to be passed as prototype", function () {
+      class ProtoDouble { fn() { } }
+      expect(() => API.createExtendableFromPrototype(ProtoDouble)).to.throw(Error);
     });
   });
 
@@ -117,6 +135,16 @@ context("API Test", () => {
       expect(instance.value).to.be.equal(1);
       expect(instance.fn).to.be.a("function");
       expect(() => instance.fn()).to.not.throw();
+    });
+    it("should add objects saved on the child to the resulting object's this", function () {
+      let Extendable = API.getExtendableStub();
+      let Extended = Extendable.extend("", {
+        someData: {
+          theData: "data"
+        }
+      });
+      let instance = new Extended();
+      expect(instance.someData.theData).to.be.equal("data");
     });
   });
 });

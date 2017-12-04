@@ -7,7 +7,21 @@ module.exports = {
 
   loaded_factories: {},
 
-  createExtendable: function (proto) {
+  createExtendableFromPrototype: function (proto) {
+    try {
+      //eslint-disable-next-line no-unused-vars
+      let instance = proto();
+    } catch (e) {
+      if (e instanceof TypeError) {
+        throw new Error("Illegal argument: only ES5 prototype accepted");
+      }
+      throw e;
+    }
+    proto.extend = ExtendableStub.extend;
+    return proto;
+  },
+
+  createExtendableFromObj: function (proto) {
     return this.getExtendableStub(proto);
   },
 

@@ -1,21 +1,35 @@
 /* global module */
-"use strict";
 
+//borrowing the excellent Typescript extender function
+var __extends = function (d, b) {
+  Object.setPrototypeOf(d, b);
+  function __() { this.constructor = d; }
+  d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 
-class ExtendableStub {
+function ExtendableStub() {
 
-  static extend(name, proto) {
-    var fnClass = proto.constructor.name !== "Object" ? proto.constructor : function () { };
-    fnClass.extend = ExtendableStub.extend;
-    fnClass.prototype = Object.create(this.prototype);
-    for (var fnName in proto) {
-      if (proto.hasOwnProperty(fnName)) {
-        fnClass.prototype[fnName] = proto[fnName];
+}
+
+ExtendableStub.extend = function (name, proto) {
+  //this is a refernce to the prototype already
+  //e.g. Controller.extend() , this === Controller
+  var that = this;
+  var NewClass = (function (superClass) {
+    __extends(NewClass, superClass);
+    function NewClass () {
+      proto.constructor && proto.constructor();
+      return superClass.apply(this, arguments) || this;
+    }
+    NewClass.extend = that.extend;
+    for (var fn in proto) {
+      if (proto.hasOwnProperty(fn)){
+        NewClass.prototype[fn] = proto[fn];
       }
     }
-    fnClass.prototype.constructor = fnClass;
-    return fnClass;
-  }
-}
+    return NewClass;
+  })(that);
+  return NewClass;
+};
 
 module.exports = ExtendableStub;
