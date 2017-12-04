@@ -30,6 +30,6 @@ ExtendableStub.extend = function (name, proto) {
     return NewClass;
   })(that);
   return NewClass;
-}
+};
 
 module.exports = ExtendableStub;
