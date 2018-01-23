@@ -20,5 +20,8 @@
     "mocha": "^3.5.3",
     "sinon": "^3.2.1",
     "sinon-chai": "^2.13.0"
+  },
+  "dependencies": {
+    "deepmerge": "^2.0.1"
   }
 }
