@@ -11,6 +11,10 @@ context("Test SAP define global override", function() {
       SAPDefine.importFactory("/test/example/UI5ModuleExample", { uou: "pourra" } );
       expect(sap.uou).to.be.equal("pourra");
     });
+    it("Should add .ui.comp.smartthing.SmartThingy to sap global variable", function() {
+      SAPDefine.importFactory("/test/example/UI5ModuleExample", {ui: { comp: { smartthing:{ SmartThingy: "test_value" } } }} );
+      expect(sap.ui.comp.smartthing.SmartThingy).to.be.equal("test_value");
+    });
   });
 
 });
