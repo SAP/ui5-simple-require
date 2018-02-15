@@ -41,10 +41,15 @@ module.exports = {
     globalContext = globalContext || {};
 
     if (this.loaded_factories[module_path]) {
-      importedObject = this.loaded_factories[module_path];
+      const loaded = this.loaded_factories[module_path];
+      global.sap = loaded.sap;
+      importedObject = loaded.fn;
     } else {
       importedObject = SAPDefine.importFactory(module_path, globalContext);
-      this.loaded_factories[module_path] = importedObject;
+      this.loaded_factories[module_path] = {
+        fn: importedObject,
+        sap: global.sap
+      };
     }
 
     return importedObject.apply(this, dependencies);
