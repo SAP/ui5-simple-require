@@ -51,6 +51,14 @@ context("API Test", () => {
       expect(m.depTwo).to.be.equal("cba");
     });
 
+    it("Should inject global context object using global", () => {
+      let m = ui5require('/test/example/UI5GlobalSAPExample')
+        .global({ value: "abc" })
+        .resolve();
+      expect(m).to.be.an("object");
+      expect(m.value).to.be.equal("abc");
+    });
+
   })
 
   describe(".import function", () => {

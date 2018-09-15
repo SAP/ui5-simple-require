@@ -2,6 +2,7 @@
 
 const ExtendableStub = require("./src/ExtendableStub");
 const SAPDefine = require("./src/sapDefine");
+const deepmerge = require("deepmerge");
 
 const NODE_CONTEXT = {};
 
@@ -9,6 +10,7 @@ class RequiredClass {
   constructor(path) {
     this.path = path;
     this.dependencies = {};
+    this.globalContext = {};
     this.importedModule = null;
 
     this.dependencyLookup = {};
@@ -19,14 +21,17 @@ class RequiredClass {
     return this;
   }
 
-  resolve() {
-    let globalContext = {};
+  global(context) {
+    this.globalContext = context;
+    return this;
+  }
 
+  resolve() {
     if (NODE_CONTEXT[this.path]) {
       let loadedModule = NODE_CONTEXT[this.path];
       this.importedModule = loadedModule.module;
     } else {
-      this.importedModule = SAPDefine.importFactory(this.path, globalContext);
+      this.importedModule = SAPDefine.importFactory(this.path, this.globalContext);
       NODE_CONTEXT[this.path] = {
         module : this.importedModule
       }

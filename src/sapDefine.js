@@ -12,7 +12,7 @@ module.exports = {
       parameters: []
     };
 
-    global.sap = deepmerge(globalContext, {
+    let currentContext = deepmerge(global.sap || {}, {
       ui: {
         define: function(arr, fn) {
           importObject.fn = fn;
@@ -21,6 +21,8 @@ module.exports = {
         resource: function() {}
       }
     });
+
+    global.sap = deepmerge(currentContext, globalContext);
 
     require(path.resolve(".") + module_path);
     return importObject;
