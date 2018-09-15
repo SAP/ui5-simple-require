@@ -3,6 +3,42 @@
 const ExtendableStub = require("./src/ExtendableStub");
 const SAPDefine = require("./src/sapDefine");
 
+const NODE_CONTEXT = {};
+
+class RequiredClass {
+  constructor(path) {
+    this.path = path;
+    this.dependencies = {};
+    this.importedModule = null;
+
+    this.dependencyLookup = {};
+  }
+
+  inject(path, dep) {
+    this.dependencyLookup[path] = dep;
+    return this;
+  }
+
+  resolve() {
+    let globalContext = {};
+
+    if (NODE_CONTEXT[this.path]) {
+      let loadedModule = NODE_CONTEXT[this.path];
+      this.importedModule = loadedModule.module;
+    } else {
+      this.importedModule = SAPDefine.importFactory(this.path, globalContext);
+      NODE_CONTEXT[this.path] = {
+        module : this.importedModule
+      }
+    }
+
+    let dependencies = this.importedModule.parameters
+      .map((p) => this.dependencyLookup[p] || null);
+    return this.importedModule.fn.apply(this, dependencies);
+  }
+
+}
+
 module.exports = {
 
   loaded_factories: {},
@@ -33,6 +69,10 @@ module.exports = {
     return ExtendableStub.extend(name || "", obj || {});
   },
 
+  ui5require: function(module_path) {
+    // TODO: check path
+    return new RequiredClass(module_path);
+  },
 
   import: function(module_path, dependencies, globalContext) {
     let importedObject;
@@ -45,7 +85,7 @@ module.exports = {
       global.sap = loaded.sap;
       importedObject = loaded.fn;
     } else {
-      importedObject = SAPDefine.importFactory(module_path, globalContext);
+      importedObject = SAPDefine.importFactory(module_path, globalContext).fn;
       this.loaded_factories[module_path] = {
         fn: importedObject,
         sap: global.sap

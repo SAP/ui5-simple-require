@@ -8,7 +8,50 @@ const sinon = require("sinon");
 const sinonChai = require("sinon-chai");
 chai.use(sinonChai);
 
+const ui5require = API.ui5require;
+
 context("API Test", () => {
+
+  describe.only(".require new api", () => {
+
+    it("Should import library without dependencies", () => {
+      let m = ui5require('/test/example/UI5ModuleExample')
+        .resolve();
+      expect(m).to.be.an("object");
+    });
+
+    it("Should import library without dependencies", () => {
+      let m = ui5require('/test/example/UI5ModuleExample')
+        .resolve();
+      expect(m).to.be.an("object");
+    });
+
+    it("Should import module with behavior", () => {
+      let m = ui5require('/test/example/UI5ModuleWithBehavior')
+        .resolve();
+      expect(m).to.be.an("object");
+      expect(m.behavior()).to.equal("result");
+    });
+
+    it("Should import library and inject dependency values", () => {
+      let m = ui5require('/test/example/UI5InjectionExample')
+        .inject('/path/to/dependency', { injectedValue: "abc" })
+        .resolve();
+      expect(m).to.be.an("object");
+      expect(m.dep).to.be.equal("abc");
+    });
+
+    it("Should import multiple dependencies", () => {
+      let m = ui5require('/test/example/UI5MultipleInjectionExample')
+        .inject('/path/to/dependency1', { injectedValue: "abc" })
+        .inject('/path/to/dependency2', { injectedValue: "cba" })
+        .resolve()
+      expect(m).to.be.an("object");
+      expect(m.depOne).to.be.equal("abc");
+      expect(m.depTwo).to.be.equal("cba");
+    });
+
+  })
 
   describe(".import function", () => {
 

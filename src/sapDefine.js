@@ -6,11 +6,17 @@ const deepmerge = require("deepmerge");
 module.exports = {
   importFactory : function(module_path, globalContext) {
     globalContext = globalContext || {};
-    let importObject;
+
+    let importObject = {
+      fn: null,
+      parameters: []
+    };
+
     global.sap = deepmerge(globalContext, {
       ui: {
         define: function(arr, fn) {
-          importObject = fn;
+          importObject.fn = fn;
+          importObject.parameters = arr;
         },
         resource: function() {}
       }
