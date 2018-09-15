@@ -59,6 +59,14 @@ context("API Test", () => {
       expect(m.value).to.be.equal("abc");
     });
 
+    it("Should load original dependency from lookup", () => {
+      let m = ui5require('/test/example/UI5NestedDependencyExample')
+        .resolve();
+
+      expect(m).to.be.an("object");
+      expect(m.getNestedBehavior()).to.be.equal("result");
+    });
+
   })
 
   describe(".import function", () => {
