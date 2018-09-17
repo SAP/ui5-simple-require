@@ -4,7 +4,7 @@
 let expect = require("chai").expect;
 let SAPDefine = require("../src/sapDefine");
 
-context.skip("Test SAP define global override", function() {
+context("Test SAP define global override", function() {
 
   describe("Override sap global", function() {
     it("Should add .uou to sap variable", function() {
