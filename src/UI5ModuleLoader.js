@@ -13,6 +13,7 @@ module.exports = {
   },
 
   loadUI5Module: function(file) {
+    this.unloadUI5Module(file);
     const importedModule = {
       fn: null,
       parameters: []
