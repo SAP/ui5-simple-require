@@ -2,7 +2,6 @@
 
 const ExtendableStub = require("./src/ExtendableStub");
 const SAPDefine = require("./src/sapDefine");
-const deepmerge = require("deepmerge");
 const RequiredClass = require("./src/RequiredClass");
 
 let deprecated_flag = false;
