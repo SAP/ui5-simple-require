@@ -1,8 +1,8 @@
 "use strict";
 
 const SAPDefine = require("./sapDefine");
-
-const NODE_CONTEXT = {};
+const loader = require("./UI5ModuleLoader");
+const path = require("path");
 
 const getBasePathFromFile = (file) => {
   let parts = file.split('/');
@@ -15,6 +15,7 @@ class RequiredClass {
     this.path = path;
     this.dependencies = {};
     this.globalContext = {};
+    this.sap = {};
     this.importedModule = null;
 
     this.dependencyLookup = {};
@@ -30,22 +31,28 @@ class RequiredClass {
     return this;
   }
 
+  globalSAP(context) {
+    this.sap = context;
+    return this;
+  }
+
+  dissolve() {
+    loader.unloadUI5Module(this.path);
+  }
+
   resolve() {
-    if (NODE_CONTEXT[this.path]) {
-      let loadedModule = NODE_CONTEXT[this.path];
-      this.importedModule = loadedModule.module;
-    } else {
-      this.importedModule = SAPDefine.importFactory(this.path, this.globalContext);
-      NODE_CONTEXT[this.path] = {
-        module : this.importedModule
-      }
-    }
-
+    this.importedModule = loader.loadUI5Module(this.path);
     let basePath = getBasePathFromFile(this.path);
-
     let dependencies = this.importedModule.parameters
       .map((p) => this.dependencyLookup[p] || new RequiredClass(basePath + '/' + p).resolve());
+    global.sap = this.sap;
     return this.importedModule.fn.apply(this, dependencies);
+    delete global["sap"];
+  }
+
+  onResolve(callback) {
+    callback(this.resolve());
+    this.dissolve();
   }
 
 }

@@ -12,64 +12,80 @@ const ui5require = API.ui5require;
 
 context("API Test", () => {
 
-  describe.only(".require new api", () => {
+  describe(".require new api", () => {
 
-    it("Should import library without dependencies", () => {
-      let m = ui5require('/test/example/UI5ModuleExample')
-        .resolve();
-      expect(m).to.be.an("object");
+    it("Should import library without dependencies", (done) => {
+      ui5require('/test/example/UI5ModuleExample')
+        .onResolve((m) => {
+          expect(m).to.be.an("object");
+          done();
+        });
     });
 
-    it("Should import library without dependencies", () => {
-      let m = ui5require('/test/example/UI5ModuleExample')
-        .resolve();
-      expect(m).to.be.an("object");
+    it("Should import library without dependencies", (done) => {
+      ui5require('/test/example/UI5ModuleExample')
+        .onResolve((m) => {
+          expect(m).to.be.an("object");
+          done();
+        });
     });
 
-    it("Should import module with behavior", () => {
-      let m = ui5require('/test/example/UI5ModuleWithBehavior')
-        .resolve();
-      expect(m).to.be.an("object");
-      expect(m.behavior()).to.equal("result");
+
+    it("Should import module with behavior", (done) => {
+      ui5require('/test/example/UI5ModuleWithBehavior')
+        .onResolve((m) => {
+          expect(m).to.be.an("object");
+          expect(m.behavior()).to.equal("result");
+          done();
+        });
     });
 
-    it("Should import library and inject dependency values", () => {
-      let m = ui5require('/test/example/UI5InjectionExample')
+    it("Should import library and inject dependency values", (done) => {
+      ui5require('/test/example/UI5InjectionExample')
         .inject('/path/to/dependency', { injectedValue: "abc" })
-        .resolve();
-      expect(m).to.be.an("object");
-      expect(m.dep).to.be.equal("abc");
+        .onResolve((m) => {
+          expect(m).to.be.an("object");
+          expect(m.dep).to.be.equal("abc");
+          done();
+        });
     });
 
-    it("Should import multiple dependencies", () => {
-      let m = ui5require('/test/example/UI5MultipleInjectionExample')
+    it("Should import multiple dependencies", (done) => {
+      ui5require('/test/example/UI5MultipleInjectionExample')
         .inject('/path/to/dependency1', { injectedValue: "abc" })
         .inject('/path/to/dependency2', { injectedValue: "cba" })
-        .resolve()
-      expect(m).to.be.an("object");
-      expect(m.depOne).to.be.equal("abc");
-      expect(m.depTwo).to.be.equal("cba");
+        .onResolve((m) => {
+          expect(m).to.be.an("object");
+          expect(m.depOne).to.be.equal("abc");
+          expect(m.depTwo).to.be.equal("cba");
+          done();
+        });
     });
 
-    it("Should inject global context object using global", () => {
-      let m = ui5require('/test/example/UI5GlobalSAPExample')
-        .global({ value: "abc" })
-        .resolve();
-      expect(m).to.be.an("object");
-      expect(m.value).to.be.equal("abc");
+    it("Should inject global context object using global", (done) => {
+      ui5require('/test/example/UI5GlobalSAPExample')
+        .globalSAP({ value: "abc" })
+        .onResolve((m) => {
+          expect(m).to.be.an("object");
+          expect(m.value).to.be.equal("abc");
+          done();
+        });
     });
 
-    it("Should load original dependency from lookup", () => {
-      let m = ui5require('/test/example/UI5NestedDependencyExample')
-        .resolve();
-
-      expect(m).to.be.an("object");
-      expect(m.getNestedBehavior()).to.be.equal("result");
+    it("Should load original dependency from lookup", (done) => {
+      ui5require('/test/example/UI5NestedDependencyExample')
+        .onResolve((m) => {
+          expect(m).to.be.an("object");
+          expect(m.getNestedBehavior()).to.be.equal("result");
+          done();
+        });
     });
 
   })
+});
 
-  describe(".import function", () => {
+context.skip("Old API Test", () => {
+  describe.skip(".import function", () => {
 
     it("Should import library without dependencies", () => {
       let m = API.import("/test/example/UI5ModuleExample");
