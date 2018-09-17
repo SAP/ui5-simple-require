@@ -51,7 +51,7 @@ module.exports = {
       global.sap = loaded.sap;
       importedObject = loaded.fn;
     } else {
-      importedObject = SAPDefine.importFactory(module_path, globalContext).fn;
+      importedObject = SAPDefine.importFactory(module_path, globalContext);
       this.loaded_factories[module_path] = {
         fn: importedObject,
         sap: global.sap

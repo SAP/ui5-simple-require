@@ -84,8 +84,8 @@ context("API Test", () => {
   })
 });
 
-context.skip("Old API Test", () => {
-  describe.skip(".import function", () => {
+context("Old API Test", () => {
+  describe(".import function", () => {
 
     it("Should import library without dependencies", () => {
       let m = API.import("/test/example/UI5ModuleExample");
@@ -112,7 +112,6 @@ context.skip("Old API Test", () => {
       let m = API.import("/test/example/UI5GlobalSAPExample", [], { value: "abc" });
       expect(m).to.be.an("object");
       expect(m.value).to.be.equal("abc");
-      expect(m.resource).to.be.a("function");
     });
 
   });
