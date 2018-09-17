@@ -5,6 +5,8 @@ const SAPDefine = require("./src/sapDefine");
 const deepmerge = require("deepmerge");
 const RequiredClass = require("./src/RequiredClass");
 
+let deprecated_flag = false;
+
 module.exports = {
 
   loaded_factories: {},
@@ -41,6 +43,10 @@ module.exports = {
   },
 
   import: function(module_path, dependencies, globalContext) {
+    if (!deprecated_flag) {
+      console.log('\x1b[31m', '@ui5-module-loader: `.import` method is deprecated. Use `.ui5require` instead.');
+      deprecated_flag = true;
+    }
     let importedObject;
 
     dependencies = dependencies || [];
