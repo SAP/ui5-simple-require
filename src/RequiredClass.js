@@ -38,6 +38,7 @@ class RequiredClass {
 
   dissolve() {
     loader.unloadUI5Module(this.path);
+    delete global["sap"];
   }
 
   resolve() {
@@ -47,7 +48,6 @@ class RequiredClass {
       .map((p) => this.dependencyLookup[p] || new RequiredClass(basePath + '/' + p).resolve());
     global.sap = this.sap;
     return this.importedModule.fn.apply(this, dependencies);
-    delete global["sap"];
   }
 
   onResolve(callback) {
