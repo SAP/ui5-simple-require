@@ -8,21 +8,20 @@ const ui5require = API.ui5require;
 /* This test shows an error we have with global state + node context */
 context("", function() {
 
-  it("Import with global context", function(done) {
-    ui5require("/test/example/UI5GlobalSAPExample")
-      .globalSAP({ value: "abc" })
-      .onResolve((m) => {
-        expect(m.value).to.be.equal("abc");
-        done();
-      });
+  afterEach(() => {
+    API.clearGlobalContext();
+    API.clearInjection();
+  })
+
+  it("Import with global context", function() {
+    API.globalContext({ value: 'abc' });
+    const m = ui5require('/test/example/UI5GlobalSAPExample');
+    expect(m.value).to.be.equal("abc");
   });
 
-  it("Import another global context", function(done) {
-    ui5require("/test/example/UI5GlobalSAPExample")
-      .globalSAP({ value: "cba" })
-      .onResolve((m) => {
-        expect(m.value).to.be.equal("cba");
-        done();
-      });
+  it("Import another global context", function() {
+    API.globalContext({ value: 'cba' });
+    const m = ui5require('/test/example/UI5GlobalSAPExample');
+    expect(m.value).to.be.equal("cba");
   });
 });

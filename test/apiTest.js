@@ -12,7 +12,7 @@ const ui5require = API.ui5require;
 
 context("API Test", () => {
 
-  describe.only(".ui5require new api", () => {
+  describe(".ui5require new api", () => {
     it("Should import library without dependencies", () => {
       const UI5ModuleExample = ui5require('/test/example/UI5ModuleExample');
       expect(UI5ModuleExample).to.be.an("object");
