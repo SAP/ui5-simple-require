@@ -3,17 +3,18 @@
 const path = require("path");
 
 module.exports = {
-  unloadUI5Module: function(file) {
-    Object.keys(require.cache).filter((k) =>
-      require.cache[k] &&
-        require.cache[k].parent &&
-        require.cache[k].parent.id === path.resolve(".") + file)
-      .forEach((dep) => unloadUI5Module(dep));
+  unloadUI5Module: function(file, dependencies) {
+    dependencies.forEach((d) => delete require.cache[path.resolve(".") + d + ".js"]);
     delete require.cache[path.resolve(".") + file + ".js"];
   },
 
+  _removeFromCacheIfExists: function(modulePath) {
+    if (require.cache[modulePath])
+      delete require.cache[modulePath];
+  },
+
   loadUI5Module: function(file) {
-    this.unloadUI5Module(file);
+    // this.unloadUI5Module(file, []);
     const importedModule = {
       fn: null,
       parameters: []
@@ -27,8 +28,12 @@ module.exports = {
         }
       }
     }
+
+    const requirePath = path.resolve(".") + path.normalize(file + ".js");
+    this._removeFromCacheIfExists(requirePath);
     require(path.resolve(".") + file);
     delete global["sap"];
+    this._removeFromCacheIfExists(requirePath);
     return importedModule;
   }
 }

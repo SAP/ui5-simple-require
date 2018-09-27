@@ -3,8 +3,12 @@
 const ExtendableStub = require("./src/ExtendableStub");
 const SAPDefine = require("./src/sapDefine");
 const RequiredClass = require("./src/RequiredClass");
+const deepmerge = require('deepmerge');
 
 let deprecated_flag = false;
+
+let dependency_lookup = {};
+let global_context = {}
 
 module.exports = {
 
@@ -36,9 +40,30 @@ module.exports = {
     return ExtendableStub.extend(name || "", obj || {});
   },
 
-  ui5require: function(module_path) {
-    // TODO: check path
-    return new RequiredClass(module_path);
+  globalContext: function(context) {
+    global_context = deepmerge(global_context, context); 
+  },
+
+  clearGlobalContext: function() {
+    global_context = {};
+  },
+
+  inject: function(path, dep) {
+    dependency_lookup[path] = dep;
+  },
+
+  clearInjection: function() {
+    dependency_lookup = {};
+  },
+
+  ui5require: function(module_path, position_dependencies, context) {
+    context = context || {};
+    const requiredClass = new RequiredClass(module_path);
+    global_context = deepmerge(global_context, context);
+    return requiredClass.resolve(
+      global_context, 
+      dependency_lookup, 
+      position_dependencies || []);
   },
 
   import: function(module_path, dependencies, globalContext) {
