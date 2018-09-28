@@ -6,7 +6,7 @@ const getBasePathFromFile = (file) => {
   return parts.slice(0, parts.length - 1).join('/');
 }
 
-class RequiredClass {
+class ModuleImporter {
   constructor(path) {
     this.path = path;
     this.globalContext = {};
@@ -47,7 +47,7 @@ class RequiredClass {
     let basePath = getBasePathFromFile(this.path);
     return dependencies.map((d) => {
       if (d.module == null)
-        return this._makeDependency(d.path, new RequiredClass(basePath + '/' + d.path)
+        return this._makeDependency(d.path, new ModuleImporter(basePath + '/' + d.path)
           .resolve(this.globalContext, this.dependencyLookup, []));
       return d;
     });
@@ -76,4 +76,4 @@ class RequiredClass {
 
 }
 
-module.exports = RequiredClass;
+module.exports = ModuleImporter;

@@ -2,7 +2,7 @@
 
 const ExtendableStub = require("./src/ExtendableStub");
 const SAPDefine = require("./src/sapDefine");
-const RequiredClass = require("./src/RequiredClass");
+const ModuleImporter = require("./src/ModuleImporter");
 const deepmerge = require('deepmerge');
 
 let deprecated_flag = false;
@@ -57,9 +57,9 @@ module.exports = {
   },
 
   ui5require: function(module_path, position_dependencies, context) {
-    const requiredClass = new RequiredClass(module_path);
+    const moduleImporter = new ModuleImporter(module_path);
     global_context = deepmerge(global_context, context || {});
-    return requiredClass.resolve(
+    return moduleImporter.resolve(
       global_context, 
       dependency_lookup, 
       position_dependencies || []);
