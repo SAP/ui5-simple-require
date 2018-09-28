@@ -9,27 +9,9 @@ const getBasePathFromFile = (file) => {
 class RequiredClass {
   constructor(path) {
     this.path = path;
-    this.dependencies = {};
     this.globalContext = {};
-    this.sap = {};
     this.importedModule = null;
-
     this.dependencyLookup = {};
-  }
-
-  inject(path, dep) {
-    this.dependencyLookup[path] = dep;
-    return this;
-  }
-
-  global(context) {
-    this.globalContext = context;
-    return this;
-  }
-
-  globalSAP(context) {
-    this.sap = context;
-    return this;
   }
 
   dissolve() {
@@ -74,7 +56,6 @@ class RequiredClass {
   resolve(global_context, dependencyLookup, positionDependencies) {
     this.globalContext = global_context;
     this.dependencyLookup = dependencyLookup;
-
     this.importedModule = loader.loadUI5Module(this.path);
 
     let dependencies = this.importedModule

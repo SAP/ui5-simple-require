@@ -57,9 +57,8 @@ module.exports = {
   },
 
   ui5require: function(module_path, position_dependencies, context) {
-    context = context || {};
     const requiredClass = new RequiredClass(module_path);
-    global_context = deepmerge(global_context, context);
+    global_context = deepmerge(global_context, context || {});
     return requiredClass.resolve(
       global_context, 
       dependency_lookup, 
