@@ -1,12 +1,11 @@
 class InjectionResolver {
 
-  constructor(dependencies, lookupTable) {
-    this.dependencies = dependencies;
+  constructor(lookupTable) {
     this.lookupTable = lookupTable;
   }
 
-  resolve() {
-    return this.dependencies.map((d) => {
+  resolve(dependencies) {
+    return dependencies.map((d) => {
       if (d.module == null && this.lookupTable[d.path]) {
         return {
           path: d.path,

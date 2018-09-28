@@ -1,15 +1,14 @@
 class PositionResolver {
 
-  constructor(dependencies, positionBasedDependency) {
-    this.dependencies = dependencies;
+  constructor(positionBasedDependency) {
     this.positionBasedDependency = positionBasedDependency;
   }
 
-  resolve() {
+  resolve(dependencies) {
     for (let pos = 0; pos < this.positionBasedDependency.length; pos++) {
-      this.dependencies[pos].module = this.positionBasedDependency[pos] || this.dependencies[pos].module;
+      dependencies[pos].module = this.positionBasedDependency[pos] || dependencies[pos].module;
     }
-    return this.dependencies;
+    return dependencies;
   }
 
 }

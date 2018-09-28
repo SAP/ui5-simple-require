@@ -3,15 +3,14 @@ const ModuleImporter = require("../ModuleImporter");
 
 class LoaderResolver {
 
-  constructor(dependencies, currentPath, loadModule) {
-    this.dependencies = dependencies;
+  constructor(currentPath, loadModule) {
     this.currentPath = currentPath;
     this.loadModule = loadModule;
   }
 
-  resolve() {
+  resolve(dependencies) {
     let basePath = this.getBasePathFromFile(this.currentPath);
-    return this.dependencies.map((d) => {
+    return dependencies.map((d) => {
       if (d.module == null) {
         const module = this.loadModule(basePath + '/' + d.path);
         return {
