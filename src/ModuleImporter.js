@@ -9,13 +9,7 @@ class ModuleImporter {
     this.globalContext = {};
     this.importedModule = null;
     this.dependencyLookup = {};
-  }
-
-  dissolve() {
-    let basepath = getBasePathFromFile(this.path);
-    let dependencies = this.importedModule.parameter.map((p) => basepath + '/' + p);
-    loader.unloadUI5Module(this.path, dependencies);
-    delete global["sap"];
+    this.resolvers = [];
   }
 
   resolve(global_context, dependencyLookup, positionDependencies) {
@@ -38,11 +32,6 @@ class ModuleImporter {
 
     global["sap"] = global_context;
     return this.importedModule.fn.apply(this, dependencies.map((d) => d.module));
-  }
-
-  onResolve(callback) {
-    callback(this.resolve());
-    this.dissolve();
   }
 
 }
