@@ -1,9 +1,5 @@
 "use strict";
-
-const SAPDefine = require("./sapDefine");
 const loader = require("./UI5ModuleLoader");
-const path = require("path");
-const deepmerge = require("deepmerge");
 
 const getBasePathFromFile = (file) => {
   let parts = file.split('/');
