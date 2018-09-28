@@ -1,10 +1,7 @@
-"use strict";
 const loader = require("./UI5ModuleLoader");
-
-const getBasePathFromFile = (file) => {
-  let parts = file.split('/');
-  return parts.slice(0, parts.length - 1).join('/');
-}
+const PositionResolver = require("./resolver/PositionResolver");
+const InjectionResolver = require('./resolver/InjectionResolver');
+const LoaderResolver = require('./resolver/LoaderResolver');
 
 class ModuleImporter {
   constructor(path) {
@@ -21,49 +18,23 @@ class ModuleImporter {
     delete global["sap"];
   }
 
-  _makeDependency(p, m) {
-    return {
-      path: p,
-      module: m
-    }
-  }
-
-  _resolvePositionDependencies(dependencies, positionDependencies) {
-    for (let pos = 0; pos < positionDependencies.length; pos++) {
-      dependencies[pos].module = positionDependencies[pos] || dependencies[pos].module;
-    }
-    return dependencies;
-  }
-
-  _resolveInjectedDependencies(dependencies) {
-    return dependencies.map((d) => {
-      if (d.module == null && this.dependencyLookup[d.path])
-        return this._makeDependency(d.path, this.dependencyLookup[d.path])
-      return d;
-    });
-  }
-
-  _resolveNestedDependencies(dependencies) {
-    let basePath = getBasePathFromFile(this.path);
-    return dependencies.map((d) => {
-      if (d.module == null)
-        return this._makeDependency(d.path, new ModuleImporter(basePath + '/' + d.path)
-          .resolve(this.globalContext, this.dependencyLookup, []));
-      return d;
-    });
-  }
-
   resolve(global_context, dependencyLookup, positionDependencies) {
     this.globalContext = global_context;
     this.dependencyLookup = dependencyLookup;
     this.importedModule = loader.loadUI5Module(this.path);
 
     let dependencies = this.importedModule
-      .parameters.map((d) => this._makeDependency(d, null));
+      .parameters.map((d) => { return { path: d, module: null }});
 
-    dependencies = this._resolvePositionDependencies(dependencies, positionDependencies);
-    dependencies = this._resolveInjectedDependencies(dependencies);
-    dependencies = this._resolveNestedDependencies(dependencies);
+    dependencies = new PositionResolver(dependencies, positionDependencies).resolve();
+    dependencies = new InjectionResolver(dependencies, this.dependencyLookup).resolve();
+    dependencies = new LoaderResolver(dependencies, this.path, (path) => {
+      return new ModuleImporter(path).resolve(
+        this.globalContext,
+        this.dependencyLookup,
+        []
+      );
+    }).resolve();
 
     global["sap"] = global_context;
     return this.importedModule.fn.apply(this, dependencies.map((d) => d.module));
