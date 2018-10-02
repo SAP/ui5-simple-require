@@ -46,7 +46,6 @@ sap.ui.define(['/path/to/Dependency'], function() {
 Dependencies will be resolved in the following order:
 
 - Position injected
-
 - Path injected
 - Loaded
 
@@ -152,43 +151,51 @@ describe("Should test money changer", () => {
 
 ## API
 
-#### `ui5require(path [, position_dependencies] [, global_context]) `
+#### `ui5require(path [, position_dependencies] [, global_context])`
 
-- `path` <string>
-- `position_dependencies` <Array>
-- `global_context` <Object>
-- **Returns: ** <Object> Loaded Module.
+- `path` \<string\>
+- `position_dependencies` \<Array\>
+- `global_context` \<Object\>
+- **Returns:** \<Object\> Loaded Module.
+
 
 #### `inject(path, dependency)`
 
-- `path` <string>
-- `dependency` <Object> 
+- `path` \<string\>
+- `dependency` \<Object\> 
+
 
 #### `clearInjection()`
 
 Deletes any dependencies passed with `inject`
 
+
 #### `globalContext(context)`
 
-- `context` <string>
+- `context` \<string\>
+
 
 #### `clearGlobalContext()`
 
 Deletes any global object passed with `globalContext(...)`
 
+
+
 #### `createExtendableFromPrototype(prototype)`
 
-- `prototype` <Object>
-- **Returns:** <Object> prototype with UI5's fake `extend` method. 
+- `prototype` \<Object\>
+- **Returns:** \<Object\> prototype with UI5's fake `extend` method. 
+
 
 #### `createExtendableFromObj(prototype)`
 
-- `prototype` <string>
-- **Returns:** <Object> class with UI5's fake `extend` method. 
+- `prototype` \<string\>
+- **Returns:** \<Object\> class with UI5's fake `extend` method. 
+
 
 #### `[DEPRECATED] import(path [, position_dependencies] [, global_context])`
 
-- `path` <string>
-- `position_dependencies` <Array>
-- `global_context` <Object>
-- **Returns: ** <Object> Loaded Module.
+- `path` \<string\>
+- `position_dependencies` \<Array\>
+- `global_context` \<Object\>
+- **Returns: ** \<Object\> Loaded Module.
