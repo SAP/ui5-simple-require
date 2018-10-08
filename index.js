@@ -2,42 +2,13 @@
 
 const ExtendableStub = require("./src/ExtendableStub");
 const SAPDefine = require("./src/sapDefine");
+const ModuleImporter = require("./src/ModuleImporter");
+const deepmerge = require('deepmerge');
 
-const NODE_CONTEXT = {};
+let deprecated_flag = false;
 
-class RequiredClass {
-  constructor(path) {
-    this.path = path;
-    this.dependencies = {};
-    this.importedModule = null;
-
-    this.dependencyLookup = {};
-  }
-
-  inject(path, dep) {
-    this.dependencyLookup[path] = dep;
-    return this;
-  }
-
-  resolve() {
-    let globalContext = {};
-
-    if (NODE_CONTEXT[this.path]) {
-      let loadedModule = NODE_CONTEXT[this.path];
-      this.importedModule = loadedModule.module;
-    } else {
-      this.importedModule = SAPDefine.importFactory(this.path, globalContext);
-      NODE_CONTEXT[this.path] = {
-        module : this.importedModule
-      }
-    }
-
-    let dependencies = this.importedModule.parameters
-      .map((p) => this.dependencyLookup[p] || null);
-    return this.importedModule.fn.apply(this, dependencies);
-  }
-
-}
+let dependency_lookup = {};
+let global_context = {}
 
 module.exports = {
 
@@ -69,12 +40,36 @@ module.exports = {
     return ExtendableStub.extend(name || "", obj || {});
   },
 
-  ui5require: function(module_path) {
-    // TODO: check path
-    return new RequiredClass(module_path);
+  globalContext: function(context) {
+    global_context = deepmerge(global_context, context); 
+  },
+
+  clearGlobalContext: function() {
+    global_context = {};
+  },
+
+  inject: function(path, dep) {
+    dependency_lookup[path] = dep;
+  },
+
+  clearInjection: function() {
+    dependency_lookup = {};
+  },
+
+  ui5require: function(module_path, position_dependencies, context) {
+    const moduleImporter = new ModuleImporter(module_path);
+    global_context = deepmerge(global_context, context || {});
+    return moduleImporter.resolve(
+      global_context, 
+      dependency_lookup, 
+      position_dependencies || []);
   },
 
   import: function(module_path, dependencies, globalContext) {
+    if (!deprecated_flag) {
+      console.log('\x1b[31m', '@ui5-module-loader: `.import` method is deprecated. Use `.ui5require` instead.');
+      deprecated_flag = true;
+    }
     let importedObject;
 
     dependencies = dependencies || [];
@@ -85,7 +80,7 @@ module.exports = {
       global.sap = loaded.sap;
       importedObject = loaded.fn;
     } else {
-      importedObject = SAPDefine.importFactory(module_path, globalContext).fn;
+      importedObject = SAPDefine.importFactory(module_path, globalContext);
       this.loaded_factories[module_path] = {
         fn: importedObject,
         sap: global.sap

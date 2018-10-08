@@ -3,16 +3,25 @@
 const expect = require("chai").expect;
 const API = require("../index.js");
 
+const ui5require = API.ui5require;
+
 /* This test shows an error we have with global state + node context */
-context.skip("", function() {
+context("", function() {
+
+  afterEach(() => {
+    API.clearGlobalContext();
+    API.clearInjection();
+  })
 
   it("Import with global context", function() {
-    let m = API.import("/test/example/UI5GlobalSAPExample", [], { value: "abc" });
+    API.globalContext({ value: 'abc' });
+    const m = ui5require('/test/example/UI5GlobalSAPExample');
     expect(m.value).to.be.equal("abc");
   });
 
   it("Import another global context", function() {
-    let m = API.import("/test/example/UI5GlobalSAPExample", [], { value: "cba" });
+    API.globalContext({ value: 'cba' });
+    const m = ui5require('/test/example/UI5GlobalSAPExample');
     expect(m.value).to.be.equal("cba");
   });
 });

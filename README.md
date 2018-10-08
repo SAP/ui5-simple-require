@@ -2,58 +2,200 @@
 
 ## Description
 
-This library was develop with the intention of importing SAP UI5 modules (created with `sap.ui.define`) into NodeJS applications. This allows the developer to isolate UI5 components and inject dependencies, hence, enabling to create isolated test environment.
+This library was develop with the intention of importing SAP UI5 modules (created with `sap.ui.define`) into NodeJS applications. This allows the developer to isolate UI5 components and inject dependencies, hence, enabling to create isolated test environment. 
 
-## Examples
+## Importing Modules
 
-#### Import any UI5 class
+When importing UI5 modules, there are few things to consider, the two major things that need to be resolved are *SAP's Global Context* and *Dependency Lookup*. This tool provides ways to inject both dependencies based on their path as well as properties that will be injected in global context when the module is loaded. 
 
-```js
-const loader = require('ui5-module-loader');
-let loaded_module = loader.import('/test/example/UI5ModuleExample');
-```
+### Require UI5 Modules 
 
-#### Import UI5 class injecting a dependency
+`ui5require` will load modules that are in `sap.ui.define` style. For example, suppose you have the following UI5 module:
 
 ```js
-const loader = require('ui5-module-loader');
-
-const Constants = {
-  key: 'value'
-};
-
-let loaded_module = loader.import('/test/example/UI5ModuleExample', [ Constants ]);
-```
-
-UI5 Class:
-
-```js
-sap.ui.define(['/path/to/constants'], function(Constants) {
-  // ...
+sap.ui.define([], function() {
+  const myClass = function() { /* CODE */ };
+    /* CODE */
+  return myClass;
 });
 ```
 
-#### Import UI5 class injecting sap global variable
+When running the import code: 
 
-```js
-const loader = require('ui5-module-loader');
+```javascript
+const ui5require = require('ui5-module-loader').ui5require;
+const MyClass = ui5require('./myUI5Class.js');
 
-const Constants = { key: 'value' };
-const SAP = {
-  value: 'bar'
-};
-
-let loaded_module = loader.import('/test/example/UI5ModuleExample', [ Constants ], SAP);
+var myObject = new MyClass();
 ```
 
-UI5 Class:
+The constant variable `ui5class` will contain the constructor function. 
+
+### Resolving Dependencies
+
+Suppose a similar module now with defined dependencies.
 
 ```js
-sap.ui.define(['/path/to/constants'], function(Constants) {
-  // ...
-  var foo = sap.value // customValue
-  // ...
+sap.ui.define(['/path/to/Dependency'], function() {
+  const myClass = function(Dependency) { /* CODE */ };
+    /* CODE */
+  return myClass;
 });
 ```
 
-Check `test/apiTest.js` for all use cases.
+Dependencies will be resolved in the following order:
+
+- Position injected
+- Path injected
+- Loaded
+
+#### Position Injected
+
+```js
+const myClass = ui5require('./myUI5Class.js', [ new FakeDependency() ]);
+```
+
+#### Path Injected
+
+Injecting by path will create a virtual path lookup. Where, whenever a dependency is required, it will first look at this injected path. 
+
+```js
+const moduleLoader = require('ui5-module-loader');
+const ui5require = moduleLoader.ui5require;
+
+moduleLoader.inject('/path/to/dependency', new FakeDependency);
+const myClass = ui5require('./myUI5Class.js');
+```
+
+#### Loaded 
+
+When no injection methods are passed, module loader will try to load the module by its path. Meaning that if a file that matches `/path/to/Dependency` is found in the path, the original dependency is loaded. 
+
+### Injecting Global Dependency
+
+Injecting a global dependency works similar to injecting dependencies. A global lookup is created for whenever a new module is loaded a global context is injected. 
+
+```js
+const moduleLoader = require('ui5-module-loader');
+const ui5require = moduleLoader.ui5require;
+
+moduleLoader.globalContext({ someValue: "custom value" });
+const myClass = ui5require('./myUI5Class.js');
+```
+
+The injected object will be under `global.sap` object. Such as:
+
+```js
+// ... ui5 module
+sap.someValue; // evaluates to "custom value"
+```
+
+## Example
+
+Using mocha and chai for writting unit tests.
+
+```js
+// MoneyChanger.js
+sap.ui.define(["./coin", "./note", "./CurrencyServer"], function(Coin, Note, CurrencyServer) {
+	var MoneyChanger = function() {};
+
+	MoneyChanger.prototype.getChange = function(i) {
+             ... 
+	}
+
+	return MoneyChanger;
+});
+
+************************************************************
+// MoneyChangerTest.js
+const expect = require('chai').expect;
+
+const API = require('ui5-module-loader');
+const ui5require = require('ui5-module-loader').ui5require;
+
+API.inject('/src/main/webapp/money/CurrencyServer', FakeCurrencyServer);
+
+const MoneyChanger = ui5require('/src/main/webapp/money/changer');
+const Note = ui5require('/src/main/webapp/money/note');
+const Coin = ui5require('/src/main/webapp/money/coin');
+
+describe("Should test money changer", () => {
+
+  let changer;
+
+  beforeEach(() => {
+    changer = new MoneyChanger();
+  })
+
+  it("Should create money changer class", () => {
+    expect(changer).to.be.an("object");
+  });
+	
+  it("Should get one coin from value 1", () => {
+    expect(changer.getChange(1)).to.be.deep.equal([ new Coin(1) ]);
+  });
+
+  it("Should get one note from value 2", () => {
+    expect(changer.getChange(2)).to.be.deep.equal([ new Note(2) ]);  
+  });
+
+  it("Should get one note and one coin from value 3", () => {
+    expect(changer.getChange(3)).to.be.deep.equal([ new Note(2), new Coin(1) ]);
+  });
+
+  // ...
+
+});
+
+```
+
+## API
+
+#### `ui5require(path [, position_dependencies] [, global_context])`
+
+- `path` \<string\>
+- `position_dependencies` \<Array\>
+- `global_context` \<Object\>
+- **Returns:** \<Object\> Loaded Module.
+
+
+#### `inject(path, dependency)`
+
+- `path` \<string\>
+- `dependency` \<Object\> 
+
+
+#### `clearInjection()`
+
+Deletes any dependencies passed with `inject`
+
+
+#### `globalContext(context)`
+
+- `context` \<string\>
+
+
+#### `clearGlobalContext()`
+
+Deletes any global object passed with `globalContext(...)`
+
+
+
+#### `createExtendableFromPrototype(prototype)`
+
+- `prototype` \<Object\>
+- **Returns:** \<Object\> prototype with UI5's fake `extend` method. 
+
+
+#### `createExtendableFromObj(prototype)`
+
+- `prototype` \<string\>
+- **Returns:** \<Object\> class with UI5's fake `extend` method. 
+
+
+#### `[DEPRECATED] import(path [, position_dependencies] [, global_context])`
+
+- `path` \<string\>
+- `position_dependencies` \<Array\>
+- `global_context` \<Object\>
+- **Returns: ** \<Object\> Loaded Module.

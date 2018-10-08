@@ -12,47 +12,74 @@ const ui5require = API.ui5require;
 
 context("API Test", () => {
 
-  describe.only(".require new api", () => {
-
+  describe(".ui5require new api", () => {
     it("Should import library without dependencies", () => {
-      let m = ui5require('/test/example/UI5ModuleExample')
-        .resolve();
-      expect(m).to.be.an("object");
+      const UI5ModuleExample = ui5require('/test/example/UI5ModuleExample');
+      expect(UI5ModuleExample).to.be.an("object");
     });
 
-    it("Should import library without dependencies", () => {
-      let m = ui5require('/test/example/UI5ModuleExample')
-        .resolve();
-      expect(m).to.be.an("object");
+    it("Should import same library in a different test", () => {
+      const UI5ModuleExample = ui5require('/test/example/UI5ModuleExample');
+      expect(UI5ModuleExample).to.be.an("object");
     });
 
-    it("Should import module with behavior", () => {
-      let m = ui5require('/test/example/UI5ModuleWithBehavior')
-        .resolve();
+     it("Should import module with behavior", () => {
+      const m = ui5require('/test/example/UI5ModuleWithBehavior');
       expect(m).to.be.an("object");
       expect(m.behavior()).to.equal("result");
     });
 
     it("Should import library and inject dependency values", () => {
-      let m = ui5require('/test/example/UI5InjectionExample')
-        .inject('/path/to/dependency', { injectedValue: "abc" })
-        .resolve();
+      API.inject("/path/to/dependency", { injectedValue: "abc" });
+      const m = ui5require('/test/example/UI5InjectionExample');
       expect(m).to.be.an("object");
       expect(m.dep).to.be.equal("abc");
     });
 
+    it("COMPATIBILITY: Should import library and inject dependency via position parameter", () => {
+      const m = ui5require('/test/example/UI5InjectionExample', [{ injectedValue: "cba" }]);
+      expect(m).to.be.an("object");
+      expect(m.dep).to.be.equal("cba");
+    })
+
     it("Should import multiple dependencies", () => {
-      let m = ui5require('/test/example/UI5MultipleInjectionExample')
-        .inject('/path/to/dependency1', { injectedValue: "abc" })
-        .inject('/path/to/dependency2', { injectedValue: "cba" })
-        .resolve()
+      API.inject("/path/to/dependency1", { injectedValue: "abc" });
+      API.inject("/path/to/dependency2", { injectedValue: "cba" });
+      const m = ui5require('/test/example/UI5MultipleInjectionExample');
       expect(m).to.be.an("object");
       expect(m.depOne).to.be.equal("abc");
       expect(m.depTwo).to.be.equal("cba");
     });
 
-  })
+    it("Should import module with global context", () => {
+      API.globalContext({ value: "abc" });
+      let m = ui5require("/test/example/UI5GlobalSAPExample");
+      expect(m).to.be.an("object");
+      expect(m.value).to.be.equal("abc");
+    });
 
+    it("COMPATIBILITY: Should import module with global context", () => {
+      let m = ui5require("/test/example/UI5GlobalSAPExample", [], { value: "cba" });
+      expect(m).to.be.an("object");
+      expect(m.value).to.be.equal("cba");
+    });
+
+    it("Should load nested module dependency", () => {
+      let m = ui5require("/test/example/UI5NestedDependencyExample");
+      expect(m).to.be.an("object");
+      expect(m.getNestedBehavior()).to.be.equal("result");
+    });
+
+    it("Should be able to load two level's nested dependencies", () => {
+      let m = ui5require("/test/example/UI5TwoLevelNestedDependency");
+      expect(m).to.be.an("object");
+      expect(m.getNestedBehavior()).to.be.equal("result");
+    });
+
+  });
+});
+
+context("Old API Test", () => {
   describe(".import function", () => {
 
     it("Should import library without dependencies", () => {
@@ -80,7 +107,6 @@ context("API Test", () => {
       let m = API.import("/test/example/UI5GlobalSAPExample", [], { value: "abc" });
       expect(m).to.be.an("object");
       expect(m.value).to.be.equal("abc");
-      expect(m.resource).to.be.a("function");
     });
 
   });
