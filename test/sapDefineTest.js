@@ -9,8 +9,8 @@ context("Test SAP define global override", function() {
   describe("Override sap global", function() {
     it("Should add .uou to sap variable", function() {
 
-      SAPDefine.importFactory("/test/example/UI5ModuleExample", { uou: "pourra" } );
-      expect(sap.uou).to.be.equal("pourra");
+      SAPDefine.importFactory("/test/example/UI5ModuleExample", { testKey: "test_value" } );
+      expect(sap.testKey).to.be.equal("test_value");
     });
     it("Should add .ui.comp.smartthing.SmartThingy to sap global variable", function() {
       SAPDefine.importFactory("/test/example/UI5ModuleExample", {ui: { comp: { smartthing:{ SmartThingy: "test_value" } } }} );
