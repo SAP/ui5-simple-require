@@ -7,7 +7,7 @@ let SAPDefine = require("../src/sapDefine");
 context("Test SAP define global override", function() {
 
   describe("Override sap global", function() {
-    it("Should add .uou to sap variable", function() {
+    it("Should add .testKey to sap variable", function() {
 
       SAPDefine.importFactory("/test/example/UI5ModuleExample", { testKey: "test_value" } );
       expect(sap.testKey).to.be.equal("test_value");
