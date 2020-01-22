@@ -209,9 +209,11 @@ Deletes any global object passed with `globalContext(...)`
 - `global_context` \<Object\>
 - **Returns: ** \<Object\> Loaded Module.
 
-## Support
+## How to obtain support
 
 If you think you found a bug or need help using the module, please create a new [github issue](https://github.com/SAP/ui5-simple-require/issues/new). 
+
+This project is provided "as-is", with no expected changes or support.
 
 
 ## Licence
