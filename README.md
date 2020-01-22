@@ -38,7 +38,7 @@ const MyClass = ui5require('./myUI5Class.js');
 var myObject = new MyClass();
 ```
 
-The constant variable `ui5class` will contain the constructor function. 
+The constant variable `MyClass` will contain the constructor function. 
 
 ### Resolving Dependencies
 
@@ -61,7 +61,7 @@ Dependencies will be resolved in the following order:
 #### Position Injected
 
 ```js
-const myClass = ui5require('./myUI5Class.js', [ new FakeDependency() ]);
+const MyClass = ui5require('./myUI5Class.js', [ new FakeDependency() ]);
 ```
 
 #### Path Injected
@@ -73,7 +73,7 @@ const moduleLoader = require('ui5-module-loader');
 const ui5require = moduleLoader.ui5require;
 
 moduleLoader.inject('/path/to/dependency', new FakeDependency);
-const myClass = ui5require('./myUI5Class.js');
+const MyClass = ui5require('./myUI5Class.js');
 ```
 
 #### Loaded 
@@ -89,7 +89,7 @@ const moduleLoader = require('ui5-module-loader');
 const ui5require = moduleLoader.ui5require;
 
 moduleLoader.globalContext({ someValue: "custom value" });
-const myClass = ui5require('./myUI5Class.js');
+const MyClass = ui5require('./myUI5Class.js');
 ```
 
 The injected object will be under `global.sap` object. Such as:
