@@ -4,7 +4,16 @@
 
 Import UI5 modules into NodeJS applications, allowing isolation of UI5 components and injection of dependencies to create an isolated test environment.
 
-## Importing Modules
+## Requirements
+* [NodeJS](https://nodejs.org/en/download/), version 8.0 or higher
+
+## Installation
+Install at your Node.js project:
+```
+$ npm install @ui5/simple-require --save-dev
+```
+
+## Usage
 
 When importing UI5 modules, there are few things to consider, the two major things that need to be resolved are *SAP's Global Context* and *Dependency Lookup*. This tool provides ways to inject both dependencies based on their path as well as properties that will be injected in global context when the module is loaded. 
 
@@ -199,6 +208,11 @@ Deletes any global object passed with `globalContext(...)`
 - `position_dependencies` \<Array\>
 - `global_context` \<Object\>
 - **Returns: ** \<Object\> Loaded Module.
+
+## Support
+
+If you think you found a bug or need help using the module, please create a new [github issue](https://github.com/SAP/ui5-simple-require/issues/new). 
+
 
 ## Licence
 Copyright (c) 2020 SAP SE or an SAP affiliate company. All rights reserved.
