@@ -216,6 +216,6 @@ If you think you found a bug or need help using the module, please create a new 
 This project is provided "as-is", with no expected changes or support.
 
 
-## Licence
+## License
 Copyright (c) 2020 SAP SE or an SAP affiliate company. All rights reserved.
 This file is licensed under the Apache Software License, v. 2 except as noted otherwise in the [LICENSE](LICENSE.txt) file.
