@@ -21,7 +21,7 @@ module.exports = {
           importedModule.fn = fn;
         }
       }
-    }
+    };
 
     const requirePath = path.resolve(".") + path.normalize(file + ".js");
     this._removeFromCacheIfExists(requirePath);
@@ -30,4 +30,4 @@ module.exports = {
     this._removeFromCacheIfExists(requirePath);
     return importedModule;
   }
-}
+};

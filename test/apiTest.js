@@ -1,4 +1,3 @@
-/* eslint-env mocha */
 "use strict";
 
 const chai = require("chai");
@@ -14,38 +13,38 @@ context("API Test", () => {
 
   describe(".ui5require new api", () => {
     it("Should import library without dependencies", () => {
-      const UI5ModuleExample = ui5require('/test/example/UI5ModuleExample');
+      const UI5ModuleExample = ui5require("/test/example/UI5ModuleExample");
       expect(UI5ModuleExample).to.be.an("object");
     });
 
     it("Should import same library in a different test", () => {
-      const UI5ModuleExample = ui5require('/test/example/UI5ModuleExample');
+      const UI5ModuleExample = ui5require("/test/example/UI5ModuleExample");
       expect(UI5ModuleExample).to.be.an("object");
     });
 
-     it("Should import module with behavior", () => {
-      const m = ui5require('/test/example/UI5ModuleWithBehavior');
+    it("Should import module with behavior", () => {
+      const m = ui5require("/test/example/UI5ModuleWithBehavior");
       expect(m).to.be.an("object");
       expect(m.behavior()).to.equal("result");
     });
 
     it("Should import library and inject dependency values", () => {
       API.inject("/path/to/dependency", { injectedValue: "abc" });
-      const m = ui5require('/test/example/UI5InjectionExample');
+      const m = ui5require("/test/example/UI5InjectionExample");
       expect(m).to.be.an("object");
       expect(m.dep).to.be.equal("abc");
     });
 
     it("COMPATIBILITY: Should import library and inject dependency via position parameter", () => {
-      const m = ui5require('/test/example/UI5InjectionExample', [{ injectedValue: "cba" }]);
+      const m = ui5require("/test/example/UI5InjectionExample", [{ injectedValue: "cba" }]);
       expect(m).to.be.an("object");
       expect(m.dep).to.be.equal("cba");
-    })
+    });
 
     it("Should import multiple dependencies", () => {
       API.inject("/path/to/dependency1", { injectedValue: "abc" });
       API.inject("/path/to/dependency2", { injectedValue: "cba" });
-      const m = ui5require('/test/example/UI5MultipleInjectionExample');
+      const m = ui5require("/test/example/UI5MultipleInjectionExample");
       expect(m).to.be.an("object");
       expect(m.depOne).to.be.equal("abc");
       expect(m.depTwo).to.be.equal("cba");

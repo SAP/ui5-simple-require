@@ -10,7 +10,7 @@ class InjectionResolver {
         return {
           path: d.path,
           module: this.lookupTable[d.path]
-        }
+        };
       }
       return d;
     });

@@ -1,6 +1,3 @@
-// const ModuleImporter = require("../ModuleImporter.js");
-const ModuleImporter = require("../ModuleImporter");
-
 class LoaderResolver {
 
   constructor(currentPath, loadModule) {
@@ -12,11 +9,11 @@ class LoaderResolver {
     let basePath = this.getBasePathFromFile(this.currentPath);
     return dependencies.map((d) => {
       if (d.module == null) {
-        const module = this.loadModule(basePath + '/' + d.path);
+        const module = this.loadModule(basePath + "/" + d.path);
         return {
           path: d.path,
           module
-        }
+        };
       }
       return d;
     });
@@ -24,8 +21,8 @@ class LoaderResolver {
   }
 
   getBasePathFromFile(file) {
-    let parts = file.split('/');
-    return parts.slice(0, parts.length - 1).join('/');
+    let parts = file.split("/");
+    return parts.slice(0, parts.length - 1).join("/");
   }
 
 }

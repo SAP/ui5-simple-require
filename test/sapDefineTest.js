@@ -1,4 +1,5 @@
-/* global require context describe it sap */
+/* global sap */
+
 "use strict";
 
 let expect = require("chai").expect;

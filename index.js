@@ -3,12 +3,12 @@
 const ExtendableStub = require("./src/ExtendableStub");
 const SAPDefine = require("./src/sapDefine");
 const ModuleImporter = require("./src/ModuleImporter");
-const deepmerge = require('deepmerge');
+const deepmerge = require("deepmerge");
 
 let deprecated_flag = false;
 
 let dependency_lookup = {};
-let global_context = {}
+let global_context = {};
 
 module.exports = {
 
@@ -67,7 +67,7 @@ module.exports = {
 
   import: function(module_path, dependencies, globalContext) {
     if (!deprecated_flag) {
-      console.log('\x1b[31m', '@ui5-module-loader: `.import` method is deprecated. Use `.ui5require` instead.');
+      console.log("\x1b[31m", "@ui5-module-loader: `.import` method is deprecated. Use `.ui5require` instead.");
       deprecated_flag = true;
     }
     let importedObject;

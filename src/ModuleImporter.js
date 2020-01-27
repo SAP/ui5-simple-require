@@ -1,7 +1,7 @@
 const loader = require("./UI5ModuleLoader");
 const PositionResolver = require("./resolver/PositionResolver");
-const InjectionResolver = require('./resolver/InjectionResolver');
-const LoaderResolver = require('./resolver/LoaderResolver');
+const InjectionResolver = require("./resolver/InjectionResolver");
+const LoaderResolver = require("./resolver/LoaderResolver");
 
 class ModuleImporter {
   constructor(path) {
@@ -12,7 +12,7 @@ class ModuleImporter {
 
   createDependencyTree() {
     return this.importedModule
-      .parameters.map((d) => { return { path: d, module: null }});
+      .parameters.map((d) => { return { path: d, module: null };});
   }
 
   createResolvers(dependencyLookup, positionDependencies, globalContext) {
