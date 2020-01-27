@@ -24,6 +24,7 @@ module.exports = {
       }
       throw e;
     }
+    
     proto.extend = ExtendableStub.extend;
     return proto;
   },
