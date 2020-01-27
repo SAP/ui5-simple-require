@@ -1,7 +1,9 @@
 const loader = require("./UI5ModuleLoader");
 const PositionResolver = require("./resolver/PositionResolver");
-const InjectionResolver = require('./resolver/InjectionResolver');
-const LoaderResolver = require('./resolver/LoaderResolver');
+const InjectionResolver = require("./resolver/InjectionResolver");
+const LoaderResolver = require("./resolver/LoaderResolver");
+const toPairs = require("lodash.topairs");
+const deepmerge = require("deepmerge");
 
 class ModuleImporter {
   constructor(path) {
@@ -12,12 +14,12 @@ class ModuleImporter {
 
   createDependencyTree() {
     return this.importedModule
-      .parameters.map((d) => { return { path: d, module: null }});
+      .parameters.map((d) => { return { path: d, module: null }; });
   }
 
   createResolvers(dependencyLookup, positionDependencies, globalContext) {
     if (positionDependencies.length > 0)
-      this.resolvers.push(new PositionResolver( positionDependencies));
+      this.resolvers.push(new PositionResolver(positionDependencies));
     if (Object.keys(dependencyLookup).length > 0)
       this.resolvers.push(new InjectionResolver(dependencyLookup));
     this.resolvers.push(new LoaderResolver(this.path, (path) => {
@@ -39,10 +41,13 @@ class ModuleImporter {
 
     let dependencies = this.createDependencyTree();
 
-    this.resolvers.forEach((resolver) => 
+    this.resolvers.forEach((resolver) =>
       dependencies = resolver.resolve(dependencies));
 
-    global["sap"] = globalContext;
+    toPairs(globalContext).forEach(([key, value]) =>
+      global[key] = global[key] ? deepmerge(global[key], value) : value
+    );
+
     return this.importedModule.fn.apply(this, dependencies.map((d) => d.module));
   }
 
