@@ -1,18 +1,30 @@
+const SAPRecursiveMock = require("../SAPRecursiveMock");
+
+const isSAPDependency = (path) => path.startsWith("sap");
+
 class InjectionResolver {
 
-  constructor(lookupTable) {
+  constructor(lookupTable, loader) {
     this.lookupTable = lookupTable;
+    this.loader = loader;
+    this.recursiveSAPMock = new SAPRecursiveMock();
   }
 
   resolve(dependencies) {
-    return dependencies.map((d) => {
-      if (d.module == null && this.lookupTable[d.path]) {
+    return dependencies.map((dependency) => {
+      const { path } = dependency;
+      if (dependency.module == null && this.lookupTable[path]) {
+        return { path, module: this.lookupTable[path] };
+      } else if (isSAPDependency(path)) {
         return {
-          path: d.path,
-          module: this.lookupTable[d.path]
-        }
+          path,
+          module: () => {
+            const mockedObject = this.recursiveSAPMock.generateMockRecursively(path, "/");
+            return mockedObject.sap;
+          }
+        };
       }
-      return d;
+      return dependency;
     });
   }
 

@@ -2,19 +2,42 @@
 
 const ExtendableStub = require("./src/ExtendableStub");
 const SAPDefine = require("./src/sapDefine");
+const SAPRecursiveMock = require("./src/SAPRecursiveMock");
 const ModuleImporter = require("./src/ModuleImporter");
-const deepmerge = require('deepmerge');
+const deepmerge = require("deepmerge");
 
 let deprecated_flag = false;
 
 let dependency_lookup = {};
-let global_context = {}
+let global_context = {};
+
+const sapGlobalContext = {
+  sap: {
+    ui: {
+      getCore: () => ({
+        initLibrary: () => { }
+      }),
+    }
+  }
+};
 
 module.exports = {
 
   loaded_factories: {},
 
-  createExtendableFromPrototype: function (proto) {
+  importLib: function(libName, libFilePath) {
+    const recursiveMock = new SAPRecursiveMock();
+    const mockedLib = recursiveMock.generateMockRecursively(libName, ".");
+
+    this.globalContext(sapGlobalContext);
+    this.globalContext(mockedLib);
+
+    const libFilePathResolved = libFilePath.startsWith("/") ? libFilePath.substr(1) : libFilePath;
+    const path = `/node_modules/${libName}/${libFilePathResolved}/library`;
+    return this.ui5require(path);
+  },
+
+  createExtendableFromPrototype: function(proto) {
     try {
       //eslint-disable-next-line no-unused-vars
       let instance = proto();
@@ -28,7 +51,7 @@ module.exports = {
     return proto;
   },
 
-  createExtendableFromObj: function (proto) {
+  createExtendableFromObj: function(proto) {
     return this.getExtendableStub(proto);
   },
 
@@ -41,7 +64,7 @@ module.exports = {
   },
 
   globalContext: function(context) {
-    global_context = deepmerge(global_context, context); 
+    global_context = deepmerge(global_context, context);
   },
 
   clearGlobalContext: function() {
@@ -60,14 +83,14 @@ module.exports = {
     const moduleImporter = new ModuleImporter(module_path);
     global_context = deepmerge(global_context, context || {});
     return moduleImporter.resolve(
-      global_context, 
-      dependency_lookup, 
+      global_context,
+      dependency_lookup,
       position_dependencies || []);
   },
 
   import: function(module_path, dependencies, globalContext) {
     if (!deprecated_flag) {
-      console.log('\x1b[31m', '@ui5-module-loader: `.import` method is deprecated. Use `.ui5require` instead.');
+      console.log("\x1b[31m", "@ui5-module-loader: `.import` method is deprecated. Use `.ui5require` instead.");
       deprecated_flag = true;
     }
     let importedObject;
