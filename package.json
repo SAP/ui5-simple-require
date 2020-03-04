@@ -11,10 +11,14 @@
     "testwatcher": "node node_modules/mocha/bin/mocha test/*Test.js --colors --recursive --watch"
   },
   "keywords": [
-    "npm",
     "mocha",
-    "ui5"
+    "ui5",
+    "sapui5",
+    "openui5",
+    "unit test",
+    "TDD"
   ],
+  "homepage": "https://github.com/SAP/ui5-simple-require",
   "contributors": [
     {
       "name": "Frederico Bittencourt",
