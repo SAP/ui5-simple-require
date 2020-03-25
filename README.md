@@ -10,7 +10,7 @@ Import UI5 modules into NodeJS applications, allowing isolation of UI5 component
 ## Installation
 Install at your Node.js project:
 ```
-$ npm install @ui5/simple-require --save-dev
+$ npm install ui5-simple-require --save-dev
 ```
 
 ## Usage
