@@ -1,6 +1,6 @@
 {
   "name": "ui5-simple-require",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "Import UI5 modules into NodeJS applications, allowing isolation of UI5 components and injection of dependencies to create an isolated test environment",
   "main": "index.js",
   "scripts": {
