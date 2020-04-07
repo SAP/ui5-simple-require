@@ -32,7 +32,7 @@ sap.ui.define([], function() {
 When running the import code: 
 
 ```javascript
-const ui5require = require('ui5-module-loader').ui5require;
+const ui5require = require('ui5-simple-require').ui5require;
 const MyClass = ui5require('./myUI5Class.js');
 
 var myObject = new MyClass();
@@ -69,7 +69,7 @@ const MyClass = ui5require('./myUI5Class.js', [ new FakeDependency() ]);
 Injecting by path will create a virtual path lookup. Where, whenever a dependency is required, it will first look at this injected path. 
 
 ```js
-const moduleLoader = require('ui5-module-loader');
+const moduleLoader = require('ui5-simple-require');
 const ui5require = moduleLoader.ui5require;
 
 moduleLoader.inject('/path/to/dependency', new FakeDependency);
@@ -85,7 +85,7 @@ When no injection methods are passed, module loader will try to load the module 
 Injecting a global dependency works similar to injecting dependencies. A global lookup is created for whenever a new module is loaded a global context is injected. 
 
 ```js
-const moduleLoader = require('ui5-module-loader');
+const moduleLoader = require('ui5-simple-require');
 const ui5require = moduleLoader.ui5require;
 
 moduleLoader.globalContext({ someValue: "custom value" });
@@ -119,8 +119,8 @@ sap.ui.define(["./coin", "./note", "./CurrencyServer"], function(Coin, Note, Cur
 // MoneyChangerTest.js
 const expect = require('chai').expect;
 
-const API = require('ui5-module-loader');
-const ui5require = require('ui5-module-loader').ui5require;
+const API = require('ui5-simple-require');
+const ui5require = require('ui5-simple-require').ui5require;
 
 API.inject('/src/main/webapp/money/CurrencyServer', FakeCurrencyServer);
 
