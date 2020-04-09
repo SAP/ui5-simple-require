@@ -15,13 +15,13 @@ context("", function() {
 
   it("Import with global context", function() {
     API.globalContext({ value: "abc" });
-    const m = ui5require("/test/example/UI5GlobalSAPExample");
+    const m = ui5require("./example/UI5GlobalSAPExample");
     expect(m.value).to.be.equal("abc");
   });
 
   it("Import another global context", function() {
     API.globalContext({ value: "cba" });
-    const m = ui5require("/test/example/UI5GlobalSAPExample");
+    const m = ui5require("./example/UI5GlobalSAPExample");
     expect(m.value).to.be.equal("cba");
   });
 });

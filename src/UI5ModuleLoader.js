@@ -1,6 +1,7 @@
 "use strict";
 
 const path = require("path");
+const getCaller = require("parent-module");
 
 module.exports = {
   _removeFromCacheIfExists: function(modulePath) {
@@ -23,9 +24,11 @@ module.exports = {
       }
     };
 
-    const requirePath = path.resolve(".") + path.normalize(file + ".js");
+    const mainScript = require.resolve("../index.js");
+    const callerDir = path.dirname(getCaller(mainScript));
+    const requirePath = require.resolve(file, {paths: [callerDir]});
     this._removeFromCacheIfExists(requirePath);
-    require(path.resolve(".") + file);
+    require(requirePath);
     delete global["sap"];
     this._removeFromCacheIfExists(requirePath);
     return importedModule;
