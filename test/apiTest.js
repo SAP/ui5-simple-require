@@ -78,6 +78,15 @@ context("API Test", () => {
       expect(m.getNestedBehavior()).to.be.equal("result");
     });
 
+    it("Should execute script in sap.ui.require", () => {
+      const Stub = class Dependency {};
+      let spy = sinon.spy();
+      Stub.spiedCall = spy;
+      API.inject("/path/to/dependency", Stub);
+      ui5require("./example/UI5SapUiRequireExample");
+      expect(spy).to.have.been.calledOnce;
+    });
+
   });
 });
 
