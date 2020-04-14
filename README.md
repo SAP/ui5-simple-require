@@ -202,7 +202,7 @@ Deletes any dependencies passed with `inject`
 
 #### `globalContext(context)`
 
-- `context` \<string\>
+- `context` \<Object\>
 
 
 #### `clearGlobalContext()`
