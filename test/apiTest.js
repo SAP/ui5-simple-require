@@ -60,10 +60,34 @@ context("API Test", () => {
       expect(m.value).to.be.equal("abc");
     });
 
+    it.skip("Should clean up global context", () => {
+      API.globalContext({ value: "abc" });
+      ui5require("/test/example/UI5GlobalSAPExample");
+      API.clearGlobalContext();
+      expect(global.sap).to.be.undefined;
+    });
+
     it("COMPATIBILITY: Should import module with global context", () => {
       let m = ui5require("./example/UI5GlobalSAPExample", [], { value: "cba" });
       expect(m).to.be.an("object");
       expect(m.value).to.be.equal("cba");
+    });
+
+    it("Should be able to inject global variables", () => {
+      const text = "lorem ipsum dolor sit amet";
+      // one can also use jsdom here
+      let dom = {
+        title: "original",
+        body: {
+          innerHTML: text
+        }
+      };
+      global.document = dom;
+      let m = ui5require("./example/UI5GlobalDOMExample");
+      expect(m.getHTML()).to.equal(text);
+      expect(() => m.changeTitle("altered")).to.not.throw();
+      expect(dom.title).to.equal("altered");
+      delete global.document;
     });
 
     it("Should load nested module dependency", () => {
