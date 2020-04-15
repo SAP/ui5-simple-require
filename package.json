@@ -1,19 +1,24 @@
 {
   "name": "ui5-simple-require",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "Import UI5 modules into NodeJS applications, allowing isolation of UI5 components and injection of dependencies to create an isolated test environment",
   "main": "index.js",
   "scripts": {
     "lint": "eslint .",
-    "test": "./node_modules/mocha/bin/mocha test/*Test.js",
-    "test:debug": "./node_modules/mocha/bin/mocha --inspect-brk test/*Test.js",
-    "testwatcher": "node node_modules/mocha/bin/mocha test/*Test.js --colors --recursive --watch"
+    "test": "mocha test/*Test.js",
+    "coverage": "nyc npm run test",
+    "test:debug": "mocha --inspect-brk test/*Test.js",
+    "testwatcher": "mocha test/*Test.js --colors --recursive --watch"
   },
   "keywords": [
-    "npm",
     "mocha",
-    "ui5"
+    "ui5",
+    "sapui5",
+    "openui5",
+    "unit test",
+    "TDD"
   ],
+  "homepage": "https://github.com/SAP/ui5-simple-require",
   "contributors": [
     {
       "name": "Frederico Bittencourt",
@@ -22,18 +27,25 @@
     {
       "name": "Nathan Schneider",
       "email": "nsschneider1@gmail.com"
+    },
+    {
+      "name": "Yuping Zuo",
+      "url": "https://github.com/zypA133510"
     }
   ],
   "license": "ISC",
   "devDependencies": {
     "chai": "^4.1.2",
-    "mocha": "^3.5.3",
-    "sinon": "^3.2.1",
-    "sinon-chai": "^2.13.0"
+    "eslint": "^6.8.0",
+    "mocha": "^7.0.1",
+    "nyc": "^15.0.0",
+    "sinon": "^8.1.1",
+    "sinon-chai": "^3.4.0"
   },
   "dependencies": {
-    "deepmerge": "^2.0.1",
     "lodash.set": "^4.3.2",
-    "lodash.topairs": "^4.3.0"
+    "lodash.topairs": "^4.3.0",
+    "deepmerge": "^4.2.2",
+    "parent-module": "^2.0.0"
   }
 }

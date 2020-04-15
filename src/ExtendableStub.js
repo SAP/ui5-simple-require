@@ -1,5 +1,3 @@
-/* global module */
-
 //borrowing the excellent Typescript extender function
 var __extends = function (d, b) {
   Object.setPrototypeOf(d, b);
@@ -23,6 +21,7 @@ ExtendableStub.extend = function (name, proto) {
     }
     NewClass.extend = that.extend;
     for (var fn in proto) {
+      // eslint-disable-next-line no-prototype-builtins
       if (proto.hasOwnProperty(fn)){
         NewClass.prototype[fn] = proto[fn];
       }
