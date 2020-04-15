@@ -20,6 +20,10 @@ module.exports = {
         define: function(dep, fn) {
           importedModule.parameters = dep;
           importedModule.fn = fn;
+        },
+        require: function(dep, fn) {
+          importedModule.parameters = dep;
+          importedModule.fn = fn;
         }
       }
     };
