@@ -124,9 +124,9 @@ const ui5require = require('ui5-simple-require').ui5require;
 
 API.inject('/src/main/webapp/money/CurrencyServer', FakeCurrencyServer);
 
-const MoneyChanger = ui5require('/src/main/webapp/money/changer');
-const Note = ui5require('/src/main/webapp/money/note');
-const Coin = ui5require('/src/main/webapp/money/coin');
+const MoneyChanger = ui5require('./src/main/webapp/money/changer');
+const Note = ui5require('./src/main/webapp/money/note');
+const Coin = ui5require('./src/main/webapp/money/coin');
 
 describe("Should test money changer", () => {
 

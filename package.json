@@ -5,10 +5,10 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint .",
-    "test": "./node_modules/mocha/bin/mocha test/*Test.js",
+    "test": "mocha test/*Test.js",
     "coverage": "nyc npm run test",
-    "test:debug": "./node_modules/mocha/bin/mocha --inspect-brk test/*Test.js",
-    "testwatcher": "node node_modules/mocha/bin/mocha test/*Test.js --colors --recursive --watch"
+    "test:debug": "mocha --inspect-brk test/*Test.js",
+    "testwatcher": "mocha test/*Test.js --colors --recursive --watch"
   },
   "keywords": [
     "mocha",
@@ -27,6 +27,10 @@
     {
       "name": "Nathan Schneider",
       "email": "nsschneider1@gmail.com"
+    },
+    {
+      "name": "Yuping Zuo",
+      "url": "https://github.com/zypA133510"
     }
   ],
   "license": "ISC",
@@ -39,6 +43,7 @@
     "sinon-chai": "^3.4.0"
   },
   "dependencies": {
-    "deepmerge": "^4.2.2"
+    "deepmerge": "^4.2.2",
+    "parent-module": "^2.0.0"
   }
 }
