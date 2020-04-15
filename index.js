@@ -8,9 +8,6 @@ const deepmerge = require("deepmerge");
 
 let deprecated_flag = false;
 
-let dependency_lookup = {};
-let global_context = {};
-
 const sapGlobalContext = {
   sap: {
     ui: {
@@ -21,13 +18,16 @@ const sapGlobalContext = {
   }
 };
 
+let dependency_lookup = {};
+let global_context = { ...sapGlobalContext };
+
 module.exports = {
 
   loaded_factories: {},
 
-  importLib: function(libName, libFilePath) {
+  importLib: function(libName, libFilePath, ui5LibName) {
     const recursiveMock = new SAPRecursiveMock();
-    const mockedLib = recursiveMock.generateMockRecursively(libName, ".");
+    const mockedLib = recursiveMock.generateMockRecursively(ui5LibName, ".");
 
     this.globalContext(sapGlobalContext);
     this.globalContext(mockedLib);
