@@ -90,12 +90,12 @@ context("API Test", () => {
   });
   describe(".importLib", () => {
     it("Should be able to import UI5 style library", () => {
-      const test = API.importLib(
+      const ui5Library = API.importLib(
         "./example/mockLib",
         "com/sap/mockLib",
         "com.sap.mockLib.namespace"
       );
-      expect(test).to.be.equal("loaded");
+      expect(ui5Library).to.be.equal("loaded");
     });
   });
 });

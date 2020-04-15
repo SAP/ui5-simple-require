@@ -99,6 +99,36 @@ The injected object will be under `global.sap` object. Such as:
 sap.someValue; // evaluates to "custom value"
 ```
 
+### Loading UI5 Libraries
+
+You can use the `importLib` function to load UI5-style libraries. ui5-simple-require populates the namespace of the library in the global context with an empty object. If you need a more elaborate implementation, you can inject using the `globalContext` function.
+
+```js
+// ./test/example/mockLib/com/sap/mockLib/library.js
+sap.ui.define([], function() {
+  com.sap.mockLib.namespace; // does not throw error, global context is populated with mock object
+  sap.ui.getCore().initLibrary({
+    name: "com.sap.mockLib.namespace",
+    version: "2.0",
+    dependencies: ["sap.ui.core"],
+    types: [],
+    interfaces: [],
+    controls: [],
+    elements: []
+  });
+  return "loaded";
+
+************************************************************
+
+// ./test/apiTest.js
+const ui5Library = API.importLib(
+  "./example/mockLib",
+  "com/sap/mockLib",
+  "com.sap.mockLib.namespace"
+); // ui5Library evaluates to "loaded"
+
+```
+
 ## Example
 
 Using mocha and chai for writting unit tests.
@@ -188,6 +218,14 @@ Deletes any dependencies passed with `inject`
 
 Deletes any global object passed with `globalContext(...)`
 
+#### `importLib(libRootPath, libFilePath, libUI5Namespace)`
+
+Import UI5 libraries
+
+- `libRootPath` \<string\>
+- `libFilePath` \<string\> 
+- `libUI5Namespace` \<string\> 
+- **Returns:** \<Object\> Loaded UI5 library module. 
 
 
 #### `createExtendableFromPrototype(prototype)`
