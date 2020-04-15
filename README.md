@@ -99,6 +99,27 @@ The injected object will be under `global.sap` object. Such as:
 sap.someValue; // evaluates to "custom value"
 ```
 
+If global variable in JavaScript is required, e.g. `window.document`, you may assign it to global like this:
+
+```js
+const { JSDOM } = require('jsdom');
+
+describe('document in global scope', () => {
+  beforeEach(() => {
+    const dom = new JSDOM(`<html><body>Hello world.</body></html>`);
+    global.document = dom.window.document;
+  });
+  afterEach(() => {
+    delete global.document;
+  });
+
+  it('should be able to access document in global scope', () => {
+    let module = ui5require('./test/example/UI5GlobalDOMExample.js');
+    expect(module.getHTML()).to.equal('Hello world.');
+  });
+});
+```
+
 ## Example
 
 Using mocha and chai for writting unit tests.
@@ -181,7 +202,7 @@ Deletes any dependencies passed with `inject`
 
 #### `globalContext(context)`
 
-- `context` \<string\>
+- `context` \<Object\>
 
 
 #### `clearGlobalContext()`
