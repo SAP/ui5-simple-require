@@ -25,15 +25,14 @@ module.exports = {
 
   loaded_factories: {},
 
-  importLib: function(libName, libFilePath, ui5LibName) {
+  importLib: function(libRootDir, libFilePath, ui5LibNamespace) {
     const recursiveMock = new SAPRecursiveMock();
-    const mockedLib = recursiveMock.generateMockRecursively(ui5LibName, ".");
+    const mockedLib = recursiveMock.generateMockRecursively(ui5LibNamespace, ".");
 
     this.globalContext(sapGlobalContext);
     this.globalContext(mockedLib);
 
-    const libFilePathResolved = libFilePath.startsWith("/") ? libFilePath.substr(1) : libFilePath;
-    const path = `/node_modules/${libName}/${libFilePathResolved}/library`;
+    const path = `${libRootDir}/${libFilePath}/library`;
     return this.ui5require(path);
   },
 

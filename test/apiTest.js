@@ -79,6 +79,16 @@ context("API Test", () => {
     });
 
   });
+  describe(".importLib", () => {
+    it("Should be able to import UI5 style library", () => {
+      const test = API.importLib(
+        "./example/mockLib",
+        "com/sap/mockLib",
+        "com.sap.mockLib.namespace"
+      );
+      expect(test).to.be.equal("loaded");
+    });
+  });
 });
 
 context("Old API Test", () => {
