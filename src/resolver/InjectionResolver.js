@@ -5,14 +5,12 @@ class InjectionResolver {
   }
 
   resolve(dependencies) {
-    return dependencies.map((d) => {
-      if (d.module == null && this.lookupTable[d.path]) {
-        return {
-          path: d.path,
-          module: this.lookupTable[d.path]
-        };
+    return dependencies.map((dependency) => {
+      const { path } = dependency;
+      if (dependency.module == null && this.lookupTable[path]) {
+        return { path, module: this.lookupTable[path] };
       }
-      return d;
+      return dependency;
     });
   }
 

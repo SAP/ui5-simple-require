@@ -54,14 +54,14 @@ context("API Test", () => {
     });
 
     it("Should import module with global context", () => {
-      API.globalContext({ value: "abc" });
+      API.globalContext({ sap: { value: "abc" } });
       let m = ui5require("./example/UI5GlobalSAPExample");
       expect(m).to.be.an("object");
       expect(m.value).to.be.equal("abc");
     });
 
     it("COMPATIBILITY: Should import module with global context", () => {
-      let m = ui5require("./example/UI5GlobalSAPExample", [], { value: "cba" });
+      let m = ui5require("./example/UI5GlobalSAPExample", [], { sap: { value: "cba" } });
       expect(m).to.be.an("object");
       expect(m.value).to.be.equal("cba");
     });
@@ -87,6 +87,16 @@ context("API Test", () => {
       expect(spy).to.have.been.calledOnce;
     });
 
+  });
+  describe(".importLib", () => {
+    it("Should be able to import UI5 style library", () => {
+      const ui5Library = API.importLib(
+        "./example/mockLib",
+        "com/sap/mockLib",
+        "com.sap.mockLib.namespace"
+      );
+      expect(ui5Library).to.be.equal("loaded");
+    });
   });
 });
 

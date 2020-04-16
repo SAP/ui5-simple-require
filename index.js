@@ -2,19 +2,41 @@
 
 const ExtendableStub = require("./src/ExtendableStub");
 const SAPDefine = require("./src/sapDefine");
+const SAPRecursiveMock = require("./src/SAPRecursiveMock");
 const ModuleImporter = require("./src/ModuleImporter");
 const deepmerge = require("deepmerge");
 
 let deprecated_flag = false;
 
+const sapGlobalContext = {
+  sap: {
+    ui: {
+      getCore: () => ({
+        initLibrary: () => { }
+      }),
+    }
+  }
+};
+
 let dependency_lookup = {};
-let global_context = {};
+let global_context = { ...sapGlobalContext };
 
 module.exports = {
 
   loaded_factories: {},
 
-  createExtendableFromPrototype: function (proto) {
+  importLib: function(libRootPath, libFilePath, ui5LibNamespace) {
+    const recursiveMock = new SAPRecursiveMock();
+    const mockedLib = recursiveMock.generateMockRecursively(ui5LibNamespace, ".");
+
+    this.globalContext(sapGlobalContext);
+    this.globalContext(mockedLib);
+
+    const path = `${libRootPath}/${libFilePath}/library`;
+    return this.ui5require(path);
+  },
+
+  createExtendableFromPrototype: function(proto) {
     try {
       //eslint-disable-next-line no-unused-vars
       let instance = proto();
@@ -28,7 +50,7 @@ module.exports = {
     return proto;
   },
 
-  createExtendableFromObj: function (proto) {
+  createExtendableFromObj: function(proto) {
     return this.getExtendableStub(proto);
   },
 
@@ -41,7 +63,7 @@ module.exports = {
   },
 
   globalContext: function(context) {
-    global_context = deepmerge(global_context, context); 
+    global_context = deepmerge(global_context, context);
   },
 
   clearGlobalContext: function() {
@@ -60,8 +82,8 @@ module.exports = {
     const moduleImporter = new ModuleImporter(module_path);
     global_context = deepmerge(global_context, context || {});
     return moduleImporter.resolve(
-      global_context, 
-      dependency_lookup, 
+      global_context,
+      dependency_lookup,
       position_dependencies || []);
   },
 
