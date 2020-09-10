@@ -1,3 +1,6 @@
+[![REUSE status](https://api.reuse.software/badge/github.com/SAP/ui5-simple-require)](https://api.reuse.software/info/github.com/SAP/ui5-simple-require)
+
+
 # ui5-simple-require
 
 ## Description
