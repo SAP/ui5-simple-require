@@ -91,11 +91,11 @@ Injecting a global dependency works similar to injecting dependencies. A global 
 const moduleLoader = require('ui5-simple-require');
 const ui5require = moduleLoader.ui5require;
 
-moduleLoader.globalContext({ someValue: "custom value" });
+moduleLoader.globalContext({ sap: { someValue: "custom value" }});
 const MyClass = ui5require('./myUI5Class.js');
 ```
 
-The injected object will be under `global.sap` object. Such as:
+The injected object will be under global context. Such as:
 
 ```js
 // ... ui5 module
