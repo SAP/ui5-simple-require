@@ -2,7 +2,7 @@ const loader = require("./UI5ModuleLoader");
 const PositionResolver = require("./resolver/PositionResolver");
 const InjectionResolver = require("./resolver/InjectionResolver");
 const LoaderResolver = require("./resolver/LoaderResolver");
-const toPairs = require("lodash.topairs");
+const toPairs = require("lodash/toPairs");
 const deepmerge = require("deepmerge");
 
 class ModuleImporter {
