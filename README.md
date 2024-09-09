@@ -8,7 +8,7 @@
 Import UI5 modules into NodeJS applications, allowing isolation of UI5 components and injection of dependencies to create an isolated test environment.
 
 ## Requirements
-* [NodeJS](https://nodejs.org/en/download/), version 8.0 or higher
+* [NodeJS](https://nodejs.org/en/download/), version 12.0 or higher
 
 ## Installation
 Install at your Node.js project:
@@ -18,9 +18,9 @@ $ npm install ui5-simple-require --save-dev
 
 ## Usage
 
-When importing UI5 modules, there are few things to consider, the two major things that need to be resolved are *SAP's Global Context* and *Dependency Lookup*. This tool provides ways to inject both dependencies based on their path as well as properties that will be injected in global context when the module is loaded. 
+When importing UI5 modules, there are few things to consider, the two major things that need to be resolved are *SAP's Global Context* and *Dependency Lookup*. This tool provides ways to inject both dependencies based on their path as well as properties that will be injected in global context when the module is loaded.
 
-### Require UI5 Modules 
+### Require UI5 Modules
 
 `ui5require` will load modules that are in `sap.ui.define` style. For example, suppose you have the following UI5 module:
 
@@ -32,7 +32,7 @@ sap.ui.define([], function() {
 });
 ```
 
-When running the import code: 
+When running the import code:
 
 ```javascript
 const ui5require = require('ui5-simple-require').ui5require;
@@ -41,7 +41,7 @@ const MyClass = ui5require('./myUI5Class.js');
 var myObject = new MyClass();
 ```
 
-The constant variable `MyClass` will contain the constructor function. 
+The constant variable `MyClass` will contain the constructor function.
 
 ### Resolving Dependencies
 
@@ -69,7 +69,7 @@ const MyClass = ui5require('./myUI5Class.js', [ new FakeDependency() ]);
 
 #### Path Injected
 
-Injecting by path will create a virtual path lookup. Where, whenever a dependency is required, it will first look at this injected path. 
+Injecting by path will create a virtual path lookup. Where, whenever a dependency is required, it will first look at this injected path.
 
 ```js
 const moduleLoader = require('ui5-simple-require');
@@ -79,13 +79,13 @@ moduleLoader.inject('/path/to/dependency', new FakeDependency);
 const MyClass = ui5require('./myUI5Class.js');
 ```
 
-#### Loaded 
+#### Loaded
 
-When no injection methods are passed, module loader will try to load the module by its path. Meaning that if a file that matches `/path/to/Dependency` is found in the path, the original dependency is loaded. 
+When no injection methods are passed, module loader will try to load the module by its path. Meaning that if a file that matches `/path/to/Dependency` is found in the path, the original dependency is loaded.
 
 ### Injecting Global Dependency
 
-Injecting a global dependency works similar to injecting dependencies. A global lookup is created for whenever a new module is loaded a global context is injected. 
+Injecting a global dependency works similar to injecting dependencies. A global lookup is created for whenever a new module is loaded a global context is injected.
 
 ```js
 const moduleLoader = require('ui5-simple-require');
@@ -142,7 +142,7 @@ sap.ui.define(["./coin", "./note", "./CurrencyServer"], function(Coin, Note, Cur
 	var MoneyChanger = function() {};
 
 	MoneyChanger.prototype.getChange = function(i) {
-             ... 
+             ...
 	}
 
 	return MoneyChanger;
@@ -172,13 +172,13 @@ describe("Should test money changer", () => {
   it("Should create money changer class", () => {
     expect(changer).to.be.an("object");
   });
-	
+
   it("Should get one coin from value 1", () => {
     expect(changer.getChange(1)).to.be.deep.equal([ new Coin(1) ]);
   });
 
   it("Should get one note from value 2", () => {
-    expect(changer.getChange(2)).to.be.deep.equal([ new Note(2) ]);  
+    expect(changer.getChange(2)).to.be.deep.equal([ new Note(2) ]);
   });
 
   it("Should get one note and one coin from value 3", () => {
@@ -204,7 +204,7 @@ describe("Should test money changer", () => {
 #### `inject(path, dependency)`
 
 - `path` \<string\>
-- `dependency` \<Object\> 
+- `dependency` \<Object\>
 
 
 #### `clearInjection()`
@@ -226,21 +226,21 @@ Deletes any global object passed with `globalContext(...)`
 Import UI5 libraries
 
 - `libRootPath` \<string\>
-- `libFilePath` \<string\> 
-- `libUI5Namespace` \<string\> 
-- **Returns:** \<Object\> Loaded UI5 library module. 
+- `libFilePath` \<string\>
+- `libUI5Namespace` \<string\>
+- **Returns:** \<Object\> Loaded UI5 library module.
 
 
 #### `createExtendableFromPrototype(prototype)`
 
 - `prototype` \<Object\>
-- **Returns:** \<Object\> prototype with UI5's fake `extend` method. 
+- **Returns:** \<Object\> prototype with UI5's fake `extend` method.
 
 
 #### `createExtendableFromObj(prototype)`
 
 - `prototype` \<string\>
-- **Returns:** \<Object\> class with UI5's fake `extend` method. 
+- **Returns:** \<Object\> class with UI5's fake `extend` method.
 
 
 #### `[DEPRECATED] import(path [, position_dependencies] [, global_context])`
@@ -252,7 +252,7 @@ Import UI5 libraries
 
 ## How to obtain support
 
-If you think you found a bug or need help using the module, please create a new [github issue](https://github.com/SAP/ui5-simple-require/issues/new). 
+If you think you found a bug or need help using the module, please create a new [github issue](https://github.com/SAP/ui5-simple-require/issues/new).
 
 This project is provided "as-is", with no expected changes or support.
 
