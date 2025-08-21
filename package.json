@@ -8,8 +8,10 @@
     "test": "mocha test/*Test.js",
     "coverage": "nyc npm run test",
     "test:debug": "mocha --inspect-brk test/*Test.js",
-    "testwatcher": "mocha test/*Test.js --colors --recursive --watch"
+    "testwatcher": "mocha test/*Test.js --colors --recursive --watch",
+    "check-ts": "tsc --noEmit"
   },
+  "typings": "types.d.ts",
   "keywords": [
     "mocha",
     "ui5",
@@ -31,6 +33,11 @@
     {
       "name": "Yuping Zuo",
       "url": "https://github.com/zypA133510"
+    },
+    {
+      "name": "Daniel Bertolozi",
+      "url": "https://github.com/danielbertolozi",
+      "email": "danielbertolozi@gmail.com"
     }
   ],
   "license": "ISC",
@@ -40,11 +47,12 @@
     "mocha": "^10.1.0",
     "nyc": "^15.1.0",
     "sinon": "^8.1.1",
-    "sinon-chai": "^3.4.0"
+    "sinon-chai": "^3.4.0",
+    "typescript": "^5.9.2"
   },
   "dependencies": {
-    "lodash": "^4.17.2",
     "deepmerge": "^4.3.1",
+    "lodash": "^4.17.2",
     "parent-module": "^2.0.0"
   }
 }
