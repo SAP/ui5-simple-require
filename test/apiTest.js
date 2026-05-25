@@ -1,7 +1,9 @@
 "use strict";
 
-const {expect} = require("chai")
-  .use(require("sinon-chai"));
+const chai = require("chai");
+const { expect } = chai;
+chai.use(require("sinon-chai"));
+
 const API = require("../index.js");
 const sinon = require("sinon");
 
