@@ -2,7 +2,8 @@
 
 const chai = require("chai");
 const { expect } = chai;
-chai.use(require("sinon-chai"));
+const sinonChai = require("sinon-chai").default;
+chai.use(sinonChai);
 
 const API = require("../index.js");
 const sinon = require("sinon");

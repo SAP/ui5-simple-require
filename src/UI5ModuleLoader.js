@@ -1,7 +1,7 @@
 "use strict";
 
 const path = require("path");
-const getCaller = require("parent-module");
+const getCaller = require("parent-module").default;
 
 module.exports = {
   _removeFromCacheIfExists: function(modulePath) {
